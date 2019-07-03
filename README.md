@@ -1,6 +1,6 @@
 # RegrEtsy Reviews
 
-> Implement navigation header and search microservice for an Etsy clone. Will be packaged with other microservices to approximate a functional item detail page.
+> Implement reviews microservice for an Etsy clone. Will be packaged with other microservices to approximate a functional item detail page.
 
 ## Related Projects
 
