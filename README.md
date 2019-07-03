@@ -1,2 +1,2 @@
 # cnebs-reviews
-A modular mini-app to handle the reviews component of our Regretsy site
+A micro-service to handle the reviews component of our Regretsy site
