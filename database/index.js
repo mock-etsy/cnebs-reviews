@@ -28,4 +28,8 @@ const seedDB = ( data ) => {
   })
 }
 
+const retrieveReview = ( data ) => {
+  
+}
+
 module.exports = { test, seedDB }
