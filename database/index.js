@@ -16,18 +16,16 @@ const test = () => {
 // Seed database
 const seedDB = ( data ) => {
   const reviews = data.data.data;
-
   reviews.forEach( review => {
     connection.query(`INSERT INTO reviews (reviewerID, reviewerName, reviewDate, reviewRating, reviewText) VALUES ("${review.id}", "${review.name}", "${review.date}", ${review.rating}, "${review.review}")`, 
     (error, results) => {
-        if (error) {
-            console.log('Error: ', error)
-        } else {
-            console.log(`DB seeded for ${review.name}`);
-        }
+      if (error) {
+        console.log('Error: ', error)
+      } else {
+        console.log(`DB seeded for ${review.name}`);
+      }
     })
-
-})
+  })
 }
 
 module.exports = { test, seedDB }

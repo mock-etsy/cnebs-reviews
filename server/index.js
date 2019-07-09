@@ -14,13 +14,19 @@ const host = HOST || '0.0.0.0';
 
 app.use('/', express.static('./client/dist'));
 
+// // Seed the database with fake data
+// db.seedDB(data);
+
 // Test data generator
 app.get('/reviews/test', (req, res) => {
   res.send(fakeData.dataGen());
 })
 
-// // Seed the database with fake data
-// db.seedDB(data);
+// Display some fake data to the page
+app.get('/reviews/review', (req, res) => {
+  
+})
+
 
 app.listen(port, host, () => 
   { console.log(`Eavesdropping on ${host} at ${port}`)});

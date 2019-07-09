@@ -1,5 +1,6 @@
 import React from "react";
 import Average from "./components/average-rating.jsx"
+import ReviewList from "./components/review-list.jsx"
 
 class App extends React.Component {
   constructor(props) {
@@ -12,6 +13,7 @@ class App extends React.Component {
       <h1>Reviews</h1>
       <span>Average Reviews</span>
       <Average />
+      <ReviewList />
     </div>
     );
   }
