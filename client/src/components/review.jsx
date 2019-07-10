@@ -1,10 +1,11 @@
 import React from "react";
+import reviewBuilder from "../utilities/reviewBuilder.jsx"
 
 const Review = (props) => {
 
   return (
     <div>
-      This is a Review.
+      {reviewBuilder(props.currentReviews[0])}
     </div>
   )
 

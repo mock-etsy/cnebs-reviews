@@ -1,5 +1,6 @@
 const mysql      = require('mysql');
 const config     = require('../config.js')
+const getRandom  = require('./utilities/getRandom.js')
 
 const connection = mysql.createConnection(config.DBCONFIG);
 
@@ -28,8 +29,22 @@ const seedDB = ( data ) => {
   })
 }
 
-const retrieveReview = ( data ) => {
-  
+const retrieveReview = (cb) => {
+  connection.query(`
+    SELECT 
+      *
+    FROM
+      reviews
+    ORDER BY RAND()
+    LIMIT 5;
+    `, 
+    (error, results) => {
+      if (error) {
+        cb('Error retrieving 5 reviews: ', error)
+      } else {
+        cb(null, results);
+      }
+    });
 }
 
-module.exports = { test, seedDB }
+module.exports = { test, seedDB, retrieveReview }

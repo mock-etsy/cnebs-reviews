@@ -6,7 +6,9 @@ const ReviewList = (props) => {
   return (
     <div>
       <h3>This is a list of Reviews</h3>
-      <Review />
+      <Review 
+        currentReviews={props.currentReviews}
+      />
     </div>
   )
 
