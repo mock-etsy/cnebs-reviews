@@ -1,7 +1,7 @@
 // Use this if need to generate another set of reviews data
 const dataGenerator = require('./utilities/dataGenerator');
 
-let data = {
+const data = {
   data: [
     {
         "id": "b4b5cff6-df00-4993-b0cf-9eb4c3fec7ea",
