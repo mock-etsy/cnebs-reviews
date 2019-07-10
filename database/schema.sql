@@ -15,5 +15,8 @@ CREATE TABLE reviews (
     reviewerName VARCHAR(500),
     reviewDate VARCHAR(500),
     reviewRating INT,
-    reviewText TEXT 
+    reviewText TEXT,
+    sellers_ID VARCHAR(500),
+    FOREIGN KEY (sellers_ID)
+      REFERENCES sellers(sellerID)
 );
