@@ -15,17 +15,84 @@ const test = () => {
 
 // Seed database
 const seedDB = ( data ) => {
-  const reviews = data.data.data;
-  reviews.forEach( review => {
-    connection.query(`INSERT INTO reviews (reviewerID, reviewerName, reviewDate, reviewRating, reviewText) VALUES ("${review.id}", "${review.name}", "${review.date}", ${review.rating}, "${review.review}")`, 
-    (error, results) => {
+  const fullData = data.data.data;
+
+  // Fill reviews table
+  fullData.forEach( seller => {
+    connection.query(`
+      INSERT INTO
+        sellers
+          (
+            sellerID, 
+            sellerName, 
+            averageRating
+          )
+        VALUES
+          (
+            "${seller.sellerId}",
+            "${seller.sellerName}",
+            ${seller.reviewInfo.averageRating}
+          )
+    `, (error, results) => {
       if (error) {
-        console.log('Error: ', error)
+        console.log('Seeding error: ', error);
       } else {
-        console.log(`DB seeded for ${review.name}`);
+        console.log('\nSeeded.\n');
       }
-    })
+    });
+    seller.reviewInfo.reviews.forEach( review => {
+      connection.query(`
+      INSERT INTO
+        reviews
+          (
+            reviewerID, 
+            reviewerName, 
+            reviewDate,
+            reviewRating,
+            reviewText,
+          )
+        VALUES
+          (
+            "${review.reviewId}",
+            "${review.name}",
+            "${review.date}",
+            ${review.rating},
+            "${review.review}",
+          )
+    `, (error, results) => {
+          if (error) {
+            console.log('Seeding error: ', error);
+          } else {
+            console.log('\nSeeded.\n');
+          }
+      })
+    });
   })
+
+  // // fill Sellers table
+  // fullData.forEach( seller => {
+  //   connection.query(`
+  //     INSERT INTO
+  //       sellers
+  //         (
+  //           sellerID, 
+  //           sellerName, 
+  //           averageRating
+  //         )
+  //       VALUES
+  //         (
+  //           "${seller.sellerId}",
+  //           "${seller.sellerName}",
+  //           ${seller.reviewInfo.averageRating}
+  //         )
+  //   `, (error, results) => {
+  //     if (error) {
+  //       console.log('Seeding error: ', error);
+  //     } else {
+  //       console.log('\nSeeded.\n');
+  //     }
+  //   })
+  // });
 }
 
 const retrieveReview = (cb) => {
