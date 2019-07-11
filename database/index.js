@@ -1,6 +1,5 @@
 const mysql      = require('mysql');
-const config     = require('../config.js')
-const getRandom  = require('./utilities/getRandom.js')
+const config     = require('../config.js');
 
 const connection = mysql.createConnection(config.DBCONFIG);
 
