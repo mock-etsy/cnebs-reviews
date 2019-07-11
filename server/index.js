@@ -24,7 +24,10 @@ app.get('/reviews/test', (req, res) => {
 
 // Display some fake data to the page
 app.get('/reviews/review', (req, res) => {
-  
+  db.retrieveReview( (err, results) => {
+    if (err) console.log(err);
+    res.send(results);
+  })
 })
 
 

@@ -1,19 +1,19 @@
 const faker = require('faker');
-const uuid = require('uuid/v4')
+const uuid = require('uuid/v4');
+const reviewGen = require('./reviewGenerator');
 
-// Helper using faker and uuid to generate 100 fake reviews
+// Helper to generate a set of sellers with respective review datasets
 const dataGen = () => {
-  const arr = new Array(100).fill(0);
-  for (let review = 0; review < arr.length; review++) {
-    arr[review] = {
-      reviewId: uuid(),
-      name:     faker.name.findName(),
-      date:     faker.date.past(1),
-      rating:   faker.random.number(5),
-      review:   faker.lorem.paragraph(4)
+  const sellerArr = new Array(100).fill(0);
+  for (let seller = 0; seller < sellerArr.length; seller++) {
+    sellerArr[seller] = {
+      sellerName:    faker.name.findName(),
+      sellerId:      uuid(),
+      reviewInfo:    reviewGen.reviewGen()
     }
   }
-  return arr;
+  // console.log('Seller count:', count)
+  return sellerArr;
 }
 
 module.exports = { dataGen }
