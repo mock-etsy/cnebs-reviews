@@ -37,9 +37,10 @@ const seedDB = ( data ) => {
       if (error) {
         console.log('Seeding error: ', error);
       } else {
-        console.log('\nSeeded.\n');
+        console.log('\nSeeded info for seller: ', seller.sellerName);
       }
     });
+    // fill sellers table
     seller.reviewInfo.reviews.forEach( review => {
       connection.query(`
       INSERT INTO
@@ -49,7 +50,7 @@ const seedDB = ( data ) => {
             reviewerName, 
             reviewDate,
             reviewRating,
-            reviewText,
+            reviewText
           )
         VALUES
           (
@@ -57,52 +58,25 @@ const seedDB = ( data ) => {
             "${review.name}",
             "${review.date}",
             ${review.rating},
-            "${review.review}",
+            "${review.review}"
           )
     `, (error, results) => {
           if (error) {
             console.log('Seeding error: ', error);
           } else {
-            console.log('\nSeeded.\n');
+            console.log('\nSeeded rating for ',seller.sellerName,': ', review.rating);
           }
       })
     });
   })
-
-  // // fill Sellers table
-  // fullData.forEach( seller => {
-  //   connection.query(`
-  //     INSERT INTO
-  //       sellers
-  //         (
-  //           sellerID, 
-  //           sellerName, 
-  //           averageRating
-  //         )
-  //       VALUES
-  //         (
-  //           "${seller.sellerId}",
-  //           "${seller.sellerName}",
-  //           ${seller.reviewInfo.averageRating}
-  //         )
-  //   `, (error, results) => {
-  //     if (error) {
-  //       console.log('Seeding error: ', error);
-  //     } else {
-  //       console.log('\nSeeded.\n');
-  //     }
-  //   })
-  // });
 }
 
-const retrieveReview = (cb) => {
+const retrieveSeller = (cb) => {
   connection.query(`
     SELECT 
       *
     FROM
-      reviews
-    ORDER BY RAND()
-    LIMIT 5;
+      sellers
     `, 
     (error, results) => {
       if (error) {
@@ -113,4 +87,4 @@ const retrieveReview = (cb) => {
     });
 }
 
-module.exports = { test, seedDB, retrieveReview }
+module.exports = { test, seedDB, retrieveSeller }

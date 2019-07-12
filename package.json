@@ -22,6 +22,7 @@
     "path": "^0.12.7",
     "react": "^16.8.6",
     "react-bootstrap": "^1.0.0-beta.9",
+    "react-bootstrap-star-rating": "^3.5.5-alpha.0.3",
     "react-dom": "^16.8.6",
     "require": "^2.4.20"
   },
@@ -34,7 +35,7 @@
     "eslint-config-hackreactor": "git://github.com/reactorcore/eslint-config-hackreactor",
     "faker": "^4.1.0",
     "uuid": "^3.3.2",
-    "webpack": "^4.35.2",
+    "webpack": "^4.35.3",
     "webpack-cli": "^3.3.5"
   }
 }
