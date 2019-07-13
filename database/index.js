@@ -17,7 +17,7 @@ const test = () => {
 const seedDB = ( data ) => {
   const fullData = data.data.data;
 
-  // Fill reviews table
+  // Fill sellers table
   fullData.forEach( seller => {
     connection.query(`
       INSERT INTO
@@ -40,7 +40,9 @@ const seedDB = ( data ) => {
         console.log('\nSeeded info for seller: ', seller.sellerName);
       }
     });
-    // fill sellers table
+
+
+    // fill reviews table
     seller.reviewInfo.reviews.forEach( review => {
       connection.query(`
       INSERT INTO
@@ -50,7 +52,8 @@ const seedDB = ( data ) => {
             reviewerName, 
             reviewDate,
             reviewRating,
-            reviewText
+            reviewText,
+            sellers_ID
           )
         VALUES
           (
@@ -58,7 +61,8 @@ const seedDB = ( data ) => {
             "${review.name}",
             "${review.date}",
             ${review.rating},
-            "${review.review}"
+            "${review.review}",
+            "${seller.sellerId}"
           )
     `, (error, results) => {
           if (error) {
