@@ -4,11 +4,11 @@ import dateConverter from "./dateConverter.jsx"
 const reviewBuilder = (data) => {
   return (
     <div>
-      <span>{data.reviewerName} {dateConverter(data.reviewDate)}</span>
+      <span>{data.name} {dateConverter(data.date)}</span>
       <br />
-      <span>Rating: {data.reviewRating}</span>
+      <span>Rating: {data.rating}</span>
       <br />
-      <span>{data.reviewText}</span>
+      <span>{data.review}</span>
     </div>
   );
 }

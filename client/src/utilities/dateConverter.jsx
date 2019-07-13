@@ -1,7 +1,25 @@
 import React from "react";
 
 const dateConverter = (data) => {
-  return data.splice(0, 11);
+  
+  let result;
+  
+  const months = [
+    'Jan', 'Feb', 'Mar', 'Apr', 'May',
+    'Jun', 'Jul', 'Aug', 'Sep',
+    'Oct', 'Nov', 'Dece'
+  ];
+
+  // data: 2018-07-26T21:05:18.226Z
+
+  let ymdArr  = data.slice(0, 10).split('-')   // ['2018', '07', '26']
+
+  const month = months[Number(ymdArr[1])]; // Jul
+  const day   = Number(ymdArr[2]);         // 26
+  const year  = Number(ymdArr[0]);         // 2018
+
+  result = `${month} ${day}, ${year}`;     // Jul 26, 2018
+  return result;
 }
 
 export default dateConverter;

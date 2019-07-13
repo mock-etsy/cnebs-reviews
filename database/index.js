@@ -15,27 +15,72 @@ const test = () => {
 
 // Seed database
 const seedDB = ( data ) => {
-  const reviews = data.data.data;
-  reviews.forEach( review => {
-    connection.query(`INSERT INTO reviews (reviewerID, reviewerName, reviewDate, reviewRating, reviewText) VALUES ("${review.id}", "${review.name}", "${review.date}", ${review.rating}, "${review.review}")`, 
-    (error, results) => {
+  const fullData = data.data.data;
+
+  // Fill sellers table
+  fullData.forEach( seller => {
+    connection.query(`
+      INSERT INTO
+        sellers
+          (
+            sellerID, 
+            sellerName, 
+            averageRating
+          )
+        VALUES
+          (
+            "${seller.sellerId}",
+            "${seller.sellerName}",
+            ${seller.reviewInfo.averageRating}
+          )
+    `, (error, results) => {
       if (error) {
-        console.log('Error: ', error)
+        console.log('Seeding error: ', error);
       } else {
-        console.log(`DB seeded for ${review.name}`);
+        console.log('\nSeeded info for seller: ', seller.sellerName);
       }
-    })
+    });
+
+
+    // fill reviews table
+    seller.reviewInfo.reviews.forEach( review => {
+      connection.query(`
+      INSERT INTO
+        reviews
+          (
+            reviewerID, 
+            reviewerName, 
+            reviewDate,
+            reviewRating,
+            reviewText,
+            sellers_ID
+          )
+        VALUES
+          (
+            "${review.reviewId}",
+            "${review.name}",
+            "${review.date}",
+            ${review.rating},
+            "${review.review}",
+            "${seller.sellerId}"
+          )
+    `, (error, results) => {
+          if (error) {
+            console.log('Seeding error: ', error);
+          } else {
+            console.log('\nSeeded rating for ',seller.sellerName,': ', review.rating);
+          }
+      })
+    });
   })
 }
 
-const retrieveReview = (cb) => {
+const retrieveSeller = (cb) => {
   connection.query(`
     SELECT 
       *
     FROM
-      reviews
-    ORDER BY RAND()
-    LIMIT 5;
+      sellers
     `, 
     (error, results) => {
       if (error) {
@@ -46,4 +91,4 @@ const retrieveReview = (cb) => {
     });
 }
 
-module.exports = { test, seedDB, retrieveReview }
+module.exports = { test, seedDB, retrieveSeller }

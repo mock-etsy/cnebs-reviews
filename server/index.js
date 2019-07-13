@@ -14,8 +14,8 @@ const host = HOST || '0.0.0.0';
 
 app.use('/', express.static('./client/dist'));
 
-// // Seed the database with fake data
-// db.seedDB(data);
+// Seed the database with fake data
+db.seedDB(data);
 
 // Test data generator
 app.get('/reviews/test', (req, res) => {
@@ -23,8 +23,8 @@ app.get('/reviews/test', (req, res) => {
 })
 
 // Display some fake data to the page
-app.get('/reviews/review', (req, res) => {
-  db.retrieveReview( (err, results) => {
+app.get('/reviews/sellers/seller', (req, res) => {
+  db.retrieveSeller( (err, results) => {
     if (err) console.log(err);
     res.send(results);
   })
