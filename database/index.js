@@ -75,20 +75,42 @@ const seedDB = ( data ) => {
   })
 }
 
-const retrieveSeller = (cb) => {
+const retrieveSeller = (id, cb) => {
   connection.query(`
     SELECT 
-      *
+      sellers_ID,
+      sellerName,
+      averageRating,
+      reviewerName,
+      reviewDate,
+      reviewRating,
+      reviewText
     FROM
-      sellers
+      sellers,
+      reviews
+    WHERE
+      reviews.sellers_ID = "${id}"
+    AND 
+      sellerID = "${id}";
     `, 
     (error, results) => {
       if (error) {
-        cb('Error retrieving 5 reviews: ', error)
+        cb('Error retrieving reviews for 1 seller: ', error)
       } else {
         cb(null, results);
       }
     });
 }
 
-module.exports = { test, seedDB, retrieveSeller }
+const retrieveSellerIds = (cb) => {
+  
+  connection.query(`select sellerID from sellers;`,(error, results) => {
+    if (error) {
+      cb('Error retrieving seller IDs', error);
+    } else {
+      cb(null, results);
+    }
+  })
+}
+
+module.exports = { test, seedDB, retrieveSeller, retrieveSellerIds }

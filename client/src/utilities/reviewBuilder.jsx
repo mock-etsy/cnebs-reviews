@@ -2,13 +2,16 @@ import React from "react";
 import dateConverter from "./dateConverter.jsx"
 
 const reviewBuilder = (data) => {
+
+  console.log('test all data: \n', data[0].name);
+
   return (
     <div>
-      <span>{data.name} {dateConverter(data.date)}</span>
+      <span>{data[0].name} {dateConverter(data[0].date)}</span>
       <br />
-      <span>Rating: {data.rating}</span>
+      <span>Rating: {data[0].rating}</span>
       <br />
-      <span>{data.review}</span>
+      <span>{data[0].review}</span>
     </div>
   );
 }

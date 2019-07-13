@@ -7,7 +7,7 @@ const dateConverter = (data) => {
   const months = [
     'Jan', 'Feb', 'Mar', 'Apr', 'May',
     'Jun', 'Jul', 'Aug', 'Sep',
-    'Oct', 'Nov', 'Dece'
+    'Oct', 'Nov', 'Dec'
   ];
 
   // data: 2018-07-26T21:05:18.226Z
