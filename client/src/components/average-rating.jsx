@@ -1,5 +1,5 @@
 import React from "react";
-import StarRating from 'react-bootstrap-star-rating';
+import Rating     from 'react-rating';
 
 const Average = (props) => {
 
@@ -8,11 +8,9 @@ const Average = (props) => {
     <div>
       <span>Average Seller Rating: {props.averageRating}</span>
 
-    <StarRating
-        defaultValue={5}
-        min={0}
-        max={10}
-        step={0.5} />
+      <Rating 
+      readonly
+      />
 
       <span> ({props.totalReviews})</span>
     </div>

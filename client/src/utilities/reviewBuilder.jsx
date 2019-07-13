@@ -3,15 +3,22 @@ import dateConverter from "./dateConverter.jsx"
 
 const reviewBuilder = (data) => {
 
-  console.log('test all data: \n', data[0].name);
+  console.log('test all data: \n', data.name);
 
   return (
     <div>
-      <span>{data[0].name} {dateConverter(data[0].date)}</span>
+      <span classname='reviewDate'>
+        {data.name} {dateConverter(data.date)}
+      </span>
       <br />
-      <span>Rating: {data[0].rating}</span>
+      <span classname='reviewRating'>
+        Rating: {data.rating}
+      </span>
       <br />
-      <span>{data[0].review}</span>
+      <br />
+      <span classname='reviewText'>
+        {data.review}
+      </span>
     </div>
   );
 }

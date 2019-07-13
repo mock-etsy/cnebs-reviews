@@ -5,7 +5,9 @@ const Review = (props) => {
 
   return (
     <div>
-      {reviewBuilder(props.currentReviews)}
+      <br />
+        {reviewBuilder(props.currentReviews)}
+      <br />
     </div>
   )
 
