@@ -17,10 +17,9 @@ app.use('/', express.static('./client/dist'));
 // Seed the database with fake data
 // db.seedDB(data);
 
-// Test data generator
+// Test data generator on /test
 app.get('/reviews/test', (req, res) => {
-  db.test();
-  // res.send(fakeData.dataGen());
+  res.send(fakeData.dataGen());
 })
 
 // Get seller information for a single seller ID

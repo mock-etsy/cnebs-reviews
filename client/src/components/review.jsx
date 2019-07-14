@@ -1,8 +1,7 @@
-import React from "react";
+import React         from "react";
 import reviewBuilder from "../utilities/reviewBuilder.jsx"
 
 const Review = (props) => {
-
   return (
     <div>
       <br />
@@ -10,7 +9,6 @@ const Review = (props) => {
       <br />
     </div>
   )
-
 }
 
 export default Review;

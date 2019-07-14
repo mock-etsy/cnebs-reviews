@@ -14,7 +14,7 @@ const dateConverter = (data) => {
 
   let ymdArr  = data.slice(0, 10).split('-')   // ['2018', '07', '26']
 
-  const month = months[Number(ymdArr[1])]; // Jul
+  const month = months[Number(ymdArr[1])-1]; // Jul
   const day   = Number(ymdArr[2]);         // 26
   const year  = Number(ymdArr[0]);         // 2018
 

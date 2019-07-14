@@ -13,6 +13,7 @@ class App extends React.Component {
     this.state = {
       currentSeller        : 'Charles Neblett',
       currentAverageRating : 5,
+      sellerIds            : [],
       currentReviews       : [ 
                                 {
                                   name   : "Elijah Keebler",
@@ -21,7 +22,6 @@ class App extends React.Component {
                                   review : "Nihil iste doloribus rerum assumenda voluptatem au… aut repellat et esse sed non corporis provident."
                                 }
                              ],
-      sellerIds            : [],
     };
 
     // binds:
@@ -57,7 +57,7 @@ class App extends React.Component {
           currentReviews       : reviews
         })
       })
-      .catch( err => console.log(`Error retrieving seller info for id ${id}:\n${err}`));
+      .catch( err => console.log(`Error retrieving seller info for id ${id}:\n${err}`) );
   }
 
   // Update state of current reviews on refresh
@@ -78,18 +78,28 @@ class App extends React.Component {
     return (
     <Container>
       <Row>
-        <h1>Reviews</h1>
+        <Col md={{offset: 5}}>
+          Rendering for Seller: {this.state.currentSeller}
+        </Col>
+      </Row>
+      <br />
+      <Row noGutters={true}>
+        <Col md={{span: 1}}>
+          <span className='reviewsHeader'>Reviews </span>
+        </Col>
+        <Col>
+          <Average 
+            averageRating={this.state.currentAverageRating}
+            totalReviews={this.state.currentReviews.length}
+          />
+        </Col>
       </Row>
       <Row>
-        <Average 
-          averageRating={this.state.currentAverageRating}
-          totalReviews={this.state.currentReviews.length}
-        />
-      </Row>
-      <Row>
-        <ReviewList 
-          currentReviews={this.state.currentReviews}
-        />
+        <Col>
+          <ReviewList 
+            currentReviews={this.state.currentReviews}
+          />
+        </Col>
       </Row>
     </Container>
     );

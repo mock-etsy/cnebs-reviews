@@ -1,24 +1,28 @@
-import React from "react";
+import React         from "react";
+import Rating        from "react-rating";
 import dateConverter from "./dateConverter.jsx"
 
 const reviewBuilder = (data) => {
-
-  console.log('test all data: \n', data.name);
-
   return (
     <div>
-      <span classname='reviewDate'>
-        {data.name} {dateConverter(data.date)}
+      <span className='reviewName'>
+        {data.name} 
       </span>
-      <br />
-      <span classname='reviewRating'>
-        Rating: {data.rating}
+      <span className='reviewDate'>
+        {`  ${dateConverter(data.date)}`}
       </span>
-      <br />
-      <br />
-      <span classname='reviewText'>
+      <p className='reviewRating'>
+      <Rating
+            className='stars'
+            readonly
+            fullSymbol='fa fa-star fa-1x'
+            emptySymbol='fa fa-star-o fa-1x'
+            initialRating={data.rating}
+      />
+      </p>
+      <p className='reviewText'>
         {data.review}
-      </span>
+      </p>
     </div>
   );
 }
