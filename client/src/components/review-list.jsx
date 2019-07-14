@@ -5,10 +5,11 @@ const ReviewList = (props) => {
 
   return (
     <div>
-      <h3>This is a list of Reviews</h3>
-      <Review 
-        currentReviews={props.currentReviews}
-      />
+      <Review currentReviews={props.currentReviews[0]}/>
+      {typeof props.currentReviews[1] !== 'undefined' ? <Review currentReviews={props.currentReviews[1]}/> : <div />}
+      {typeof props.currentReviews[2] !== 'undefined' ? <Review currentReviews={props.currentReviews[2]}/> : <div />}
+      {typeof props.currentReviews[3] !== 'undefined' ? <Review currentReviews={props.currentReviews[3]}/> : <div />}
+      {typeof props.currentReviews[4] !== 'undefined' ? <Review currentReviews={props.currentReviews[4]}/> : <div />}
     </div>
   )
 

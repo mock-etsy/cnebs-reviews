@@ -1,22 +1,18 @@
-import React from "react";
-import StarRating from 'react-bootstrap-star-rating';
+import React      from "react";
+import Rating     from 'react-rating';
+import Container  from 'react-bootstrap/Container'
 
 const Average = (props) => {
-
   return (
-
-    <div>
-      <span>Average Seller Rating: {props.averageRating}</span>
-
-    <StarRating
-        defaultValue={5}
-        min={0}
-        max={10}
-        step={0.5} />
-
-      <span> ({props.totalReviews})</span>
-    </div>
-
+    <Container>
+      <Rating
+            className='stars'
+            readonly
+            fullSymbol='fa fa-star fa-1.5x'
+            emptySymbol='fa fa-star-o fa-1.5x'
+            initialRating={props.averageRating}
+          />
+    </Container>
   )
 }
 

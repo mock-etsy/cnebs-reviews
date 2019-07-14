@@ -1,56 +1,109 @@
-import React from "react";
-import axios from 'axios';
-import Average from "./components/average-rating.jsx"
+// Middleware
+import React      from "react";
+import axios      from 'axios';
+import Container  from 'react-bootstrap/Container';
+import Row        from 'react-bootstrap/Row';
+import Col        from 'react-bootstrap/Col';
+import Average    from "./components/average-rating.jsx"
 import ReviewList from "./components/review-list.jsx"
-// Temporarily use data from fake-data-file to render stuff:
-import data from "../../database/data.js"
-
-const fullData = data.data.data
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentSeller        : fullData[0],
-      currentAverageRating : fullData[0].reviewInfo.averageRating,
-      currentReviews       : fullData[0].reviewInfo.reviews
-    }
+      currentSeller        : 'Charles Neblett',
+      currentAverageRating : 5,
+      sellerIds            : [],
+      currentReviews       : [ 
+                                {
+                                  name   : "Elijah Keebler",
+                                  date   : "2019-04-03T18:07:56.183Z",
+                                  rating : 4,
+                                  review : "Nihil iste doloribus rerum assumenda voluptatem au… aut repellat et esse sed non corporis provident."
+                                }
+                             ],
+    };
+
+    // binds:
+    this.retrieveSeller = this.retrieveSeller.bind(this);
   }
 
-  // Update state of current reviews on component mount
-  // componentDidMount() {
-  //   axios
-  //     .get('/reviews/review/seller')
-  //     .then( res => {
+  // Retrieve a seller:
+  retrieveSeller(id) {
+    axios
+      .get(`/reviews/sellers/${id}`)
+      .then( res => {
+        const data = res.data;
+        
+        // define variables to modify state:
+        const currentSeller = data[0].sellerName;
+        const average       = data[0].averageRating;
+        const reviews       = [];
 
-  //       let currentSeller = this.state.currentSeller;
-  //       let sellerData    = res.data.data.currentSeller.reviewInfo;
+        // fill ^reviews array with appropriate data:
+        data.forEach( review => reviews.push(
+          {
+            name   : review.reviewerName, 
+            date   : review.reviewDate, 
+            rating : review.reviewRating, 
+            review : review.reviewText
+          }
+        ));
 
-  //       this.setState({
-  //         currentReviews : res
-  //       })
-  //       let review = this.state.currentReviews
-  //       console.log(review);
-  //     })
-  // }
+        // set the state with new data:
+        this.setState({
+          currentSeller        : currentSeller,
+          currentAverageRating : average,
+          currentReviews       : reviews
+        })
+      })
+      .catch( err => console.log(`Error retrieving seller info for id ${id}:\n${err}`) );
+  }
+
+  // Update state of current reviews on refresh
+  componentDidMount() {
+    axios
+      .get('/reviews/sellers')
+      .then( res => {
+        const ids  = [];
+        const data = res.data
+        data.forEach( id => ids.push(id.sellerID))
+        let randomId = ids[Math.floor(Math.random() * (101 - 1)) + 1]
+        this.retrieveSeller(randomId);
+      })
+      .catch( err => console.log(`Error retrieving seller IDs from DB`));
+  }
 
   render() {
     return (
-    <div>
-      <h1>Reviews</h1>
-
-      <Average 
-        averageRating={this.state.currentAverageRating}
-        totalReviews={this.state.currentReviews.length}
-      />
-
-      <ReviewList 
-        currentReviews={this.state.currentReviews}
-      />
-    </div>
+    <Container>
+      <Row>
+        <Col md={{offset: 5}}>
+          Rendering for Seller: {this.state.currentSeller}
+        </Col>
+      </Row>
+      <br />
+      <Row noGutters={true}>
+        <Col md={{span: 1}}>
+          <span className='reviewsHeader'>Reviews </span>
+        </Col>
+        <Col>
+          <Average 
+            averageRating={this.state.currentAverageRating}
+            totalReviews={this.state.currentReviews.length}
+          />
+        </Col>
+      </Row>
+      <Row>
+        <Col>
+          <ReviewList 
+            currentReviews={this.state.currentReviews}
+          />
+        </Col>
+      </Row>
+    </Container>
     );
   }
-
 }
 
 export default App;

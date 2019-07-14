@@ -1,0 +1,20 @@
+.reviewName {
+  font-family: 'Rubik', sans-serif;
+  text-decoration: underline;
+  font-size: 14px;
+}
+
+.reviewDate {
+  font-size: 14px;
+}
+
+.reviewsHeader {
+  font-family: 'Rubik', sans-serif;
+  font-weight: 540;
+  font-size: 17px;
+}
+
+.reviewText {
+  font-size: 14px;
+}
+

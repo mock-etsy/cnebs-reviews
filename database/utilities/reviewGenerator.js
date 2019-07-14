@@ -1,14 +1,16 @@
 const weightedRandom = require('./weightedRandomNumber');
-const uuid = require('uuid/v4');
-const faker = require('faker');
+const uuid           = require('uuid/v4');
+const faker          = require('faker');
 
 // Helper used to generate a set of 100 fake reviews with average rating
 const reviewGen = () => {
+
   let total = 0
   
   const reviewArr = new Array(100).fill(0);
   
   for (let review = 0; review < reviewArr.length; review++) { 
+
     reviewArr[review] = {
       reviewId: uuid(),
       name:     faker.name.findName(),
@@ -23,9 +25,6 @@ const reviewGen = () => {
   };
   
   let average = Math.floor(total/100);
-
-  // console.log('Total: ', total);
-  // console.log('Average: ', average);
   
   const reviewObj = {
     averageRating: average,
