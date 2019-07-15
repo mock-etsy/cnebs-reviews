@@ -14,6 +14,7 @@ const reviewGen = () => {
     reviewArr[review] = {
       reviewId: uuid(),
       name:     faker.name.findName(),
+      avatar:   faker.image.avatar(),
       date:     faker.date.past(1),
       rating:   Number(weightedRandom.weightedRandom( { 5:0.5, 4:0.2, 3:0.1, 2:0.1, 1:0.1} )),
       review:   faker.lorem.paragraph(4)

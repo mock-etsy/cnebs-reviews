@@ -47,6 +47,7 @@ class App extends React.Component {
         data.forEach( review => reviews.push(
           {
             name   : review.reviewerName, 
+            avatar : review.reviewerAvatar,
             date   : review.reviewDate, 
             rating : review.reviewRating, 
             review : review.reviewText
@@ -84,20 +85,20 @@ class App extends React.Component {
 
     return (
     <Container>
-      <Row>
+       <Row>
         <Col md={{offset: 5}}>
           Rendering for Seller: {this.state.currentSeller}
         </Col>
       </Row>
       <br />
-      <Row>
+      <Col>
         <span className='reviewsHeader'>Reviews 
           <span className='averageStars'><Average
           averageRating={this.state.currentAverageRating}
           totalReviews={this.state.currentReviews.length}
           /></span>
         </span>
-      </Row>
+      </Col>
       <Row>
         <Col>
           <ReviewList 

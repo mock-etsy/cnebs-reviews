@@ -1,29 +1,41 @@
 import React         from "react";
 import Rating        from "react-rating";
+import Container     from 'react-bootstrap/Container';
+import Row           from 'react-bootstrap/Row';
+import Col           from 'react-bootstrap/Col';
 import dateConverter from "./dateConverter.jsx"
 
 const reviewBuilder = (data) => {
   return (
-    <div>
-      <span className='reviewName'>
-        {data.name} 
-      </span>
-      <span className='reviewDate'>
-        {`  ${dateConverter(data.date)}`}
-      </span>
-      <p className='reviewRating'>
-        <Rating
-              className='stars'
-              readonly
-              fullSymbol='fa fa-star fa-1x'
-              emptySymbol='fa fa-star-o fa-1x'
-              initialRating={data.rating}
-        />
-      </p>
-      <p className='reviewText'>
-        {data.review}
-      </p>
-    </div>
+    <Container>
+      <Row>
+        <Col md={{span: 1}}>
+            <img className='reviewAvatar' src={data.avatar}></img>
+        </Col>
+        <Col>
+          <Row>
+            <span className='reviewName'>{data.name}</span>
+            <span className='reviewDate'>{` ${dateConverter(data.date)}`}</span>
+          </Row>
+          <Row>
+            <p className='reviewRating'>
+              <Rating
+                    className='reviewStars'
+                    readonly
+                    fullSymbol='fa fa-star fa-1x'
+                    emptySymbol='fa fa-star-o fa-1x'
+                    initialRating={data.rating}
+              />
+            </p>
+          </Row>
+          <Row>
+            <p className='reviewText'>
+              {data.review}
+            </p>
+          </Row>
+        </Col>
+      </Row>
+    </Container>
   );
 }
 

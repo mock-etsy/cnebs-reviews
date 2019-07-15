@@ -24,13 +24,17 @@ const seedDB = ( data ) => {
         sellers
           (
             sellerID, 
-            sellerName, 
+            sellerName,
+            sellerUserName,
+            sellerAvatar,
             averageRating
           )
         VALUES
           (
             "${seller.sellerId}",
             "${seller.sellerName}",
+            "${seller.sellerUsername}",
+            "${seller.sellerAvatar}",
             ${seller.reviewInfo.averageRating}
           )
     `, (error, results) => {
@@ -41,7 +45,6 @@ const seedDB = ( data ) => {
       }
     });
 
-
     // fill reviews table
     seller.reviewInfo.reviews.forEach( review => {
       connection.query(`
@@ -50,6 +53,7 @@ const seedDB = ( data ) => {
           (
             reviewerID, 
             reviewerName, 
+            reviewerAvatar,
             reviewDate,
             reviewRating,
             reviewText,
@@ -59,6 +63,7 @@ const seedDB = ( data ) => {
           (
             "${review.reviewId}",
             "${review.name}",
+            "${review.avatar}",
             "${review.date}",
             ${review.rating},
             "${review.review}",
@@ -80,8 +85,10 @@ const retrieveSeller = (id, cb) => {
     SELECT 
       sellers_ID,
       sellerName,
+      sellerAvatar,
       averageRating,
       reviewerName,
+      reviewerAvatar,
       reviewDate,
       reviewRating,
       reviewText
