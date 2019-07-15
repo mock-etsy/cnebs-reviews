@@ -12,13 +12,13 @@ const reviewBuilder = (data) => {
         {`  ${dateConverter(data.date)}`}
       </span>
       <p className='reviewRating'>
-      <Rating
-            className='stars'
-            readonly
-            fullSymbol='fa fa-star fa-1x'
-            emptySymbol='fa fa-star-o fa-1x'
-            initialRating={data.rating}
-      />
+        <Rating
+              className='stars'
+              readonly
+              fullSymbol='fa fa-star fa-1x'
+              emptySymbol='fa fa-star-o fa-1x'
+              initialRating={data.rating}
+        />
       </p>
       <p className='reviewText'>
         {data.review}

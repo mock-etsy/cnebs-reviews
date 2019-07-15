@@ -1,4 +1,3 @@
-// Middleware
 import React      from "react";
 import axios      from 'axios';
 import Container  from 'react-bootstrap/Container';
@@ -8,10 +7,11 @@ import Average    from "./components/average-rating.jsx"
 import ReviewList from "./components/review-list.jsx"
 
 class App extends React.Component {
+  
   constructor(props) {
     super(props);
     this.state = {
-      currentSeller        : 'Charles Neblett',
+      currentSeller        : 'Initial State Rendering with 1 review',
       currentAverageRating : 5,
       sellerIds            : [],
       currentReviews       : [ 
@@ -24,6 +24,9 @@ class App extends React.Component {
                              ],
     };
 
+    // broadcast channel:
+    this.reviewChannel = new BroadcastChannel('regretfully');
+    
     // binds:
     this.retrieveSeller = this.retrieveSeller.bind(this);
   }
@@ -75,6 +78,10 @@ class App extends React.Component {
   }
 
   render() {
+    this.reviewChannel.onmessage = function(e) {
+      console.log('Received', e.data);
+    }
+
     return (
     <Container>
       <Row>
@@ -83,16 +90,13 @@ class App extends React.Component {
         </Col>
       </Row>
       <br />
-      <Row noGutters={true}>
-        <Col md={{span: 1}}>
-          <span className='reviewsHeader'>Reviews </span>
-        </Col>
-        <Col>
-          <Average 
-            averageRating={this.state.currentAverageRating}
-            totalReviews={this.state.currentReviews.length}
-          />
-        </Col>
+      <Row>
+        <span className='reviewsHeader'>Reviews 
+          <span className='averageStars'><Average
+          averageRating={this.state.currentAverageRating}
+          totalReviews={this.state.currentReviews.length}
+          /></span>
+        </span>
       </Row>
       <Row>
         <Col>
@@ -104,6 +108,7 @@ class App extends React.Component {
     </Container>
     );
   }
+
 }
 
 export default App;

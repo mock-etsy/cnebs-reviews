@@ -4,6 +4,10 @@
   font-size: 14px;
 }
 
+.stars {
+  font-size: 14px;
+}
+
 .reviewDate {
   font-size: 14px;
 }
@@ -18,3 +22,7 @@
   font-size: 14px;
 }
 
+.totalReviews {
+  font-size: 15px;
+  color: #6d6d6d;
+}
