@@ -4,6 +4,7 @@ const path       = require('path');
 const cors       = require('cors');
 const db         = require('../database/index');
 const data       = require('../database/data');
+const listData   = require('../database/forCharles');
 const fakeData   = require('../database/utilities/dataGenerator')
 
 const { PORT, HOST } = require('../config.js')
@@ -16,8 +17,10 @@ const host = HOST || '0.0.0.0';
 app.use(cors());
 app.use('/', express.static('./client/dist'));
 
-// Seed the database with fake data (uncomment to run)
+// database seeding functions:
 // // db.seedDB(data);
+// // db.seedDBListingID(listData.sellerData);
+// //db.seedDBProductInfo(listData.itemIDandPhotoforCharles);
 
 // Test data generator on /test
 app.get('/reviews/test', (req, res) => {

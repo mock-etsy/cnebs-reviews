@@ -46,11 +46,13 @@ class App extends React.Component {
         // fill ^reviews array with appropriate data:
         data.forEach( review => reviews.push(
           {
-            name   : review.reviewerName, 
-            avatar : review.reviewerAvatar,
-            date   : review.reviewDate, 
-            rating : review.reviewRating, 
-            review : review.reviewText
+            name        : review.reviewerName, 
+            avatar      : review.reviewerAvatar,
+            date        : review.reviewDate, 
+            rating      : review.reviewRating, 
+            review      : review.reviewText,
+            productImage: review.productImage,
+            productTitle: review.productTitle
           }
         ));
 

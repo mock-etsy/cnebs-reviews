@@ -1,14 +1,31 @@
-.reviewName {
+.reviewsHeader {
   font-family: 'Rubik', sans-serif;
-  text-decoration: underline;
+  font-weight: 500;
+  font-size: 17px;
+}
+
+.totalReviews {
+  font-size: 15px;
+  color: #6d6d6d;
+}
+
+.averageStars {
   font-size: 14px;
-  padding-top: 3px;
+  padding-left: 5px;
+  padding-right: 2px;
 }
 
 .reviewAvatar {
   border-radius: 50%;
   height: 50px;
   width: 50px;
+}
+
+.reviewName {
+  font-family: 'Rubik', sans-serif;
+  text-decoration: underline;
+  font-size: 14px;
+  padding-top: 3px;
 }
 
 .reviewDate {
@@ -27,20 +44,13 @@
   padding-top: 15px;
 }
 
-.averageStars {
-  font-size: 14px;
-  padding-left: 5px;
-  padding-right: 2px;
+.reviewProductImage {
+  width: 75px;
+  height: 75px;
+  padding-right: 10px;
 }
 
-.reviewsHeader {
-  font-family: 'Rubik', sans-serif;
-  font-weight: 500;
-  font-size: 17px;
-}
-
-
-.totalReviews {
-  font-size: 15px;
-  color: #6d6d6d;
+.reviewProductTitle {
+  text-decoration: underline;
+  padding-top: 30px;
 }

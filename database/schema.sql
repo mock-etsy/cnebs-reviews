@@ -9,7 +9,10 @@ CREATE TABLE sellers (
   sellerName VARCHAR(500),
   sellerUsername VARCHAR(500),
   sellerAvatar VARCHAR(500),
-  averageRating INT
+  averageRating INT,
+  listingID INT,
+  productTitle VARCHAR(500),
+  productImage VARCHAR(500)
 );
 
 CREATE TABLE reviews (

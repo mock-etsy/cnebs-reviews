@@ -80,12 +80,53 @@ const seedDB = ( data ) => {
   })
 }
 
+const seedDBListingID = function(data) {
+
+  data.forEach(seller => {
+    connection.query(
+      `UPDATE sellers SET listingID = ${seller.item}
+       WHERE sellerName = "${seller.sellerName}"`,
+      function(error, results) {
+        if (error) {
+          console.log('Error in seeding listing id: \n', error);
+        } else {
+          console.log(`Seeded ${seller.sellerName} with ${seller.item}.`);
+        }
+      }
+    );
+  });
+};
+
+const seedDBProductInfo = function(data) {
+  const products = data;
+  products.forEach( product => {
+    connection.query(
+      `UPDATE sellers 
+        SET 
+          productTitle = "${product.title}",
+          productImage = "${product.reviewItemPhoto}"
+        WHERE 
+        listingID = ${product.listing_id}`,
+      function(error, results) {
+        if (error) {
+          console.log('Error in seeding listing id: ', error);
+        } else {
+          console.log('Review-Product info seeded for: \n', product.title);
+        }
+      }
+    );
+  });
+};
+
 const retrieveSeller = (id, cb) => {
   connection.query(`
     SELECT 
       sellers_ID,
       sellerName,
       sellerAvatar,
+      listingID,
+      productTitle,
+      productImage,
       averageRating,
       reviewerName,
       reviewerAvatar,
@@ -120,4 +161,4 @@ const retrieveSellerIds = (cb) => {
   })
 }
 
-module.exports = { test, seedDB, retrieveSeller, retrieveSellerIds }
+module.exports = { test, seedDB, retrieveSeller, retrieveSellerIds, seedDBListingID, seedDBProductInfo }
