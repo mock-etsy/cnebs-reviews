@@ -1,10 +1,10 @@
-const express = require('express');
+const express    = require('express');
 const bodyParser = require('body-parser');
-const path = require('path');
-const cors = require('cors');
-const db = require('../database/index');
-const data = require('../database/data');
-const fakeData = require('../database/utilities/dataGenerator')
+const path       = require('path');
+const cors       = require('cors');
+const db         = require('../database/index');
+const data       = require('../database/data');
+const fakeData   = require('../database/utilities/dataGenerator')
 
 const { PORT, HOST } = require('../config.js')
 
@@ -16,8 +16,8 @@ const host = HOST || '0.0.0.0';
 app.use(cors());
 app.use('/', express.static('./client/dist'));
 
-// Seed the database with fake data
-// db.seedDB(data);
+// Seed the database with fake data (uncomment to run)
+// // db.seedDB(data);
 
 // Test data generator on /test
 app.get('/reviews/test', (req, res) => {
@@ -39,7 +39,6 @@ app.get('/reviews/sellers', (req, res) => {
     res.send(results);
   });
 })
-
 
 app.listen(port, host, () => 
   { console.log(`Eavesdropping on ${host} at ${port}`)});

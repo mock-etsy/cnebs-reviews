@@ -6,7 +6,7 @@ const Average = (props) => {
   return (
     <span>
       <Rating
-            className='stars'
+            className='averageStars'
             readonly
             fullSymbol='fa fa-star fa-1x'
             emptySymbol='fa fa-star-o fa-1x'

@@ -2,25 +2,43 @@
   font-family: 'Rubik', sans-serif;
   text-decoration: underline;
   font-size: 14px;
+  padding-top: 3px;
 }
 
-.stars {
-  font-size: 14px;
+.reviewAvatar {
+  border-radius: 50%;
+  height: 50px;
+  width: 50px;
 }
 
 .reviewDate {
   font-size: 14px;
+  padding-left: 8px;
+  padding-top: 3px;
 }
 
-.reviewsHeader {
-  font-family: 'Rubik', sans-serif;
-  font-weight: 540;
-  font-size: 17px;
+.reviewStars {
+  font-size: 14px;
+  padding-top: 10px;
 }
 
 .reviewText {
   font-size: 14px;
+  padding-top: 15px;
 }
+
+.averageStars {
+  font-size: 14px;
+  padding-left: 5px;
+  padding-right: 2px;
+}
+
+.reviewsHeader {
+  font-family: 'Rubik', sans-serif;
+  font-weight: 500;
+  font-size: 17px;
+}
+
 
 .totalReviews {
   font-size: 15px;
