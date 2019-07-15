@@ -33,6 +33,17 @@ const reviewBuilder = (data) => {
               {data.review}
             </p>
           </Row>
+          <Row>
+            <Col md={{span: 1.5}}>
+              <img className='reviewProductImage' src={data.productImage} />
+            </Col>
+            <Col>
+              <Row></Row>
+              <Row>
+              <span className='reviewProductTitle'>{data.productTitle}</span>
+              </Row>
+            </Col>
+          </Row>
         </Col>
       </Row>
     </Container>
