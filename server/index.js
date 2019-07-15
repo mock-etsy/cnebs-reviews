@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
+const cors = require('cors');
 const db = require('../database/index');
 const data = require('../database/data');
 const fakeData = require('../database/utilities/dataGenerator')
@@ -12,6 +13,7 @@ const app = express();
 const port = PORT || 3002;
 const host = HOST || '0.0.0.0';
 
+app.use(cors());
 app.use('/', express.static('./client/dist'));
 
 // Seed the database with fake data
