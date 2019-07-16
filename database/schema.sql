@@ -24,5 +24,5 @@ CREATE TABLE reviews (
     reviewText TEXT,
     sellers_ID VARCHAR(500),
     FOREIGN KEY (sellers_ID)
-      REFERENCES sellers(sellerID)
+      REFERENCES sellers(sellerID),
 );
