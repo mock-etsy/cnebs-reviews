@@ -3,9 +3,10 @@ import Review from "./review.jsx";
 
 const MasterReviewList = (props) => {
 
+  // Most collapsed view: Show 5 reviews
   if (props.moreClicked === false) {
     return (
-      <div>
+      <div className="collapsed-review-list-container">
         <Review currentReviews={props.currentReviews[0]}/>
         {typeof props.currentReviews[1] !== 'undefined' ? <Review currentReviews={props.currentReviews[1]}/> : <div />}
         {typeof props.currentReviews[2] !== 'undefined' ? <Review currentReviews={props.currentReviews[2]}/> : <div />}
@@ -15,6 +16,7 @@ const MasterReviewList = (props) => {
     );
   }
 
+  // [Read All Reviews] is clicked: Show all reviews
   if (props.readAllClicked === true) {
     const elements = props.currentReviews.slice(0, 100);
     const items = [];
@@ -24,14 +26,14 @@ const MasterReviewList = (props) => {
     }
 
     return (
-      <div>
+      <div className="all-reviews-list-container">
         {items}
       </div>
     );
   }
 
+  // [+ More] is clicked: Show 20 reviews
   if (props.moreClicked === true) {
-    
     const elements = props.currentReviews.slice(0, 20);
     const items = [];
     
@@ -40,7 +42,7 @@ const MasterReviewList = (props) => {
     }
     
     return (
-      <div>
+      <div className="more-review-list-container">
         {items}
       </div>
     );

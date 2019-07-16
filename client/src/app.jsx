@@ -14,7 +14,8 @@ class App extends React.Component {
     this.state = {
       moreClicked          : false,
       readAllClicked       : false,
-      currentSeller        : 'Initial State Rendering with 1 review',
+      currentSellerID      : 'Initial State Seller ID Placeholder',
+      currentSeller        : 'Initial State Seller Name Placeholder',
       currentAverageRating : 2.5,
       sellerIds            : [],
       currentReviews       : [ 
@@ -53,9 +54,10 @@ class App extends React.Component {
         const data = res.data;
         
         // define variables to modify state:
-        const currentSeller = data[0].sellerName;
-        const average       = data[0].averageRating;
-        const reviews       = [];
+        const currentSellerID = data[0].sellers_ID;
+        const currentSeller   = data[0].sellerName;
+        const average         = data[0].averageRating;
+        const reviews         = [];
 
         // fill ^reviews array with appropriate data:
         data.forEach( review => reviews.push(
@@ -72,6 +74,7 @@ class App extends React.Component {
 
         // set the state with new data:
         this.setState({
+          currentSellerID      : currentSellerID,
           currentSeller        : currentSeller,
           currentAverageRating : average,
           currentReviews       : reviews
@@ -99,14 +102,12 @@ class App extends React.Component {
       console.log('Received', e.data);
     }
 
+    console.log(`Rendering reviews for: \n
+                 Seller:   ${this.state.currentSeller}\n
+                 SellerID: ${this.state.currentSellerID}`)
+
     return (
     <Container>
-       <Row>
-        <Col md={{offset: 5}}>
-          Rendering for Seller: {this.state.currentSeller}
-        </Col>
-      </Row>
-      <br />
       <Col>
         <span className='reviewsHeader'>Reviews 
           <span className='averageStars'>
@@ -134,7 +135,7 @@ class App extends React.Component {
               <Button 
                 className ='readAllReviews' 
                 variant   ="dark" 
-                size      ="lg" 
+                size      ="lg"
                 onClick   ={this.handleReadAllReviewsClick}>
                   Read All Reviews ({this.state.currentReviews.length-11})
               </Button> : 
