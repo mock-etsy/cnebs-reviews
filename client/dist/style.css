@@ -54,3 +54,27 @@
   text-decoration: underline;
   padding-top: 30px;
 }
+
+.plusMore {
+  font-family: 'Rubik', sans-serif;
+  text-decoration: underline;
+  font-size: 14px;
+  font-weight: 550;
+  padding-bottom: 20px;
+  color: #222;
+}
+
+.plusMore:hover {
+  color: #575757;
+  cursor: pointer;
+}
+
+.readAllReviews {
+  font-family: 'Rubik', sans-serif;
+  font-size: 14px;
+  font-weight: 550;
+}
+
+.readAllReviews:hover {
+  cursor: pointer;
+}

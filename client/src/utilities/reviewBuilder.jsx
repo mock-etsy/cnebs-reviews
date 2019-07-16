@@ -10,7 +10,7 @@ const reviewBuilder = (data) => {
     <Container>
       <Row>
         <Col md={{span: 1}}>
-            <img className='reviewAvatar' src={data.avatar}></img>
+            <img className='reviewAvatar' src={typeof data.avatar === 'undefined' ? "https://www.etsy.com/images/avatars/default_avatar_75x75.png" : data.avatar}></img>
         </Col>
         <Col>
           <Row>
