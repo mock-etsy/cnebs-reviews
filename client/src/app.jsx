@@ -85,21 +85,27 @@ class App extends React.Component {
 
   // Retrieve and use randomly chosen seller on refresh
   componentDidMount() {
-    axios
-      .get('/reviews/sellers')
-      .then( res => {
-        const ids  = [];
-        const data = res.data
-        data.forEach( id => ids.push(id.sellerID))
-        let randomId = ids[Math.floor(Math.random() * (101 - 1)) + 1]
-        this.retrieveSeller(randomId);
-      })
-      .catch( err => console.log(`Error retrieving seller IDs from DB`));
+
+    // this.reviewChannel.onmessage = (e) => {
+    //   this.retrieveSeller(e.data);
+    // }
+
+    // axios
+    //   .get('/reviews/sellers')
+    //   .then( res => {
+    //     const ids  = [];
+    //     const data = res.data
+    //     data.forEach( id => ids.push(id.sellerID))
+    //     let randomId = ids[Math.floor(Math.random() * (101 - 1)) + 1]
+    //     this.retrieveSeller(randomId);
+    //   })
+    //   .catch( err => console.log(`Error retrieving seller IDs from DB`));
   }
 
   render() {
     this.reviewChannel.onmessage = function(e) {
-      console.log('Received', e.data);
+      console.log('Received: ', e.data);
+      this.retrieveSeller(e.data);
     }
 
     console.log(`Rendering reviews for: \n
