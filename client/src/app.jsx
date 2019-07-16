@@ -16,7 +16,7 @@ class App extends React.Component {
       moreClicked          : false,
       readAllClicked       : false,
       currentSeller        : 'Initial State Rendering with 1 review',
-      currentAverageRating : 5,
+      currentAverageRating : 2.5,
       sellerIds            : [],
       currentReviews       : [ 
                                 {
@@ -112,8 +112,8 @@ class App extends React.Component {
         <span className='reviewsHeader'>Reviews 
           <span className='averageStars'>
             <Average
-            averageRating={this.state.currentAverageRating}
-            totalReviews={this.state.currentReviews.length}
+              averageRating={this.state.currentAverageRating}
+              totalReviews={this.state.currentReviews.length}
             />
           </span>
         </span>
