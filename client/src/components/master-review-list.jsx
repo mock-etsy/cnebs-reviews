@@ -3,7 +3,7 @@ import Review from "./review.jsx";
 import Button from "react-bootstrap/Button";
 
 
-const ReviewList = (props) => {
+const MasterReviewList = (props) => {
 
   if (props.moreClicked === false) {
     return (
@@ -12,27 +12,13 @@ const ReviewList = (props) => {
         {typeof props.currentReviews[1] !== 'undefined' ? <Review currentReviews={props.currentReviews[1]}/> : <div />}
         {typeof props.currentReviews[2] !== 'undefined' ? <Review currentReviews={props.currentReviews[2]}/> : <div />}
         {typeof props.currentReviews[3] !== 'undefined' ? <Review currentReviews={props.currentReviews[3]}/> : <div />}
-          {typeof props.currentReviews[4] !== 'undefined' ? <Review currentReviews={props.currentReviews[4]}/> : <div />}
-      </div>
-    )
-  }
-
-  if (props.moreClicked === true) {
-    return (
-      <div>
-        {props.moreClicked === true ? <Review currentReviews={props.currentReviews[5]}/> : <span />}
-        {props.moreClicked === true ? <Review currentReviews={props.currentReviews[6]}/> : <span />}
-        {props.moreClicked === true ? <Review currentReviews={props.currentReviews[7]}/> : <span />}
-        {props.moreClicked === true ? <Review currentReviews={props.currentReviews[8]}/> : <span />}
-        {props.moreClicked === true ? <Review currentReviews={props.currentReviews[9]}/> : <span />}
-        {props.moreClicked === true ? <Review currentReviews={props.currentReviews[10]}/> : <span />}
-        <Button variant="dark" size="lg" className='readAllReviews' onClick={props.handleReadAllClick}>Read All Reviews ({props.currentReviews.length-11})</Button>
+        {typeof props.currentReviews[4] !== 'undefined' ? <Review currentReviews={props.currentReviews[4]}/> : <div />}
       </div>
     )
   }
 
   if (props.readAllClicked === true) {
-    const elements = props.currentReviews.slice(5);
+    const elements = props.currentReviews.slice(0, 100);
     const items = [];
 
     for (const [index, value] of elements.entries()) {
@@ -41,11 +27,30 @@ const ReviewList = (props) => {
 
     return (
       <div>
+        hi
         {items}
       </div>
     )
   }
 
+  if (props.moreClicked === true) {
+    
+    const elements = props.currentReviews.slice(0, 10);
+    const items = [];
+    
+    for (const [index, value] of elements.entries()) {
+      items.push(<Review key={index} currentReviews={elements[index]} />);
+    }
+    
+    return (
+      <div>
+        hi
+        {items}
+        {/* <Button variant="dark" size="lg" className='readAllReviews' onClick={props.handleReadAllClick}>Read All Reviews ({props.currentReviews.length-11})</Button> */}
+      </div>
+    )
+  }
+  
 }
 
 export default MasterReviewList;

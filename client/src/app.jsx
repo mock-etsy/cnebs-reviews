@@ -1,12 +1,14 @@
-import React          from "react";
-import axios          from 'axios';
-import Container      from 'react-bootstrap/Container';
-import Row            from 'react-bootstrap/Row';
-import Col            from 'react-bootstrap/Col';
-import Average        from "./components/average-rating.jsx";
-import ReviewList     from "./components/review-list.jsx";
-import ReviewListMore from "./components/review-list-more.jsx";
-import ReviewListAll  from "./components/review-list-all.jsx";
+import React            from "react";
+import axios            from 'axios';
+import Container        from 'react-bootstrap/Container';
+import Row              from 'react-bootstrap/Row';
+import Col              from 'react-bootstrap/Col';
+import Average          from "./components/average-rating.jsx";
+import Button           from "react-bootstrap/Button";
+import ReviewList       from "./components/review-list.jsx";
+import ReviewListMore   from "./components/review-list-more.jsx";
+import ReviewListAll    from "./components/review-list-all.jsx";
+import MasterReviewList from "./components/master-review-list.jsx"
 
 class App extends React.Component {
   
@@ -120,14 +122,22 @@ class App extends React.Component {
       </Col>
       <Row>
         <Col>
-          <ReviewList 
+          {/* <ReviewList 
             currentReviews={this.state.currentReviews}
+            moreClicked={this.state.moreClicked}
+            handleReadAllClick={this.handleReadAllReviewsClick}
+          /> */}
+          <MasterReviewList 
+            currentReviews     ={this.state.currentReviews}
+            moreClicked        ={this.state.moreClicked}
+            readAllClicked     ={this.state.readAllClicked}
+            handleReadAllClick ={this.handleReadAllReviewsClick}
           />
         </Col>
       </Row>
       <Row>
         <Col>
-          {this.state.moreClicked === true ? 
+          {/* {this.state.moreClicked === true ? 
             this.state.readAllClicked === true ?
             <ReviewListAll 
               currentReviews={this.state.currentReviews}
@@ -138,7 +148,20 @@ class App extends React.Component {
               moreClicked={this.state.moreClicked}
               handleReadAllClick={this.handleReadAllReviewsClick}
             /> : 
-            <span className='plusMore' onClick={this.handleMoreClick}>+ More</span>}
+            <span className='plusMore' onClick={this.handleMoreClick}>+ More</span>} */}
+            {this.state.moreClicked === true ? 
+              <Button 
+                className ='readAllReviews' 
+                variant   ="dark" 
+                size      ="lg" 
+                onClick   ={this.handleReadAllReviewsClick}>
+                  Read All Reviews ({this.state.currentReviews.length-11})
+              </Button> : 
+              <span 
+                className ='plusMore' 
+                onClick   ={this.handleMoreClick}>
+                  + More
+              </span>}
         </Col>
       </Row>
       <Row><p /></Row>
