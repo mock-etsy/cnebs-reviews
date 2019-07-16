@@ -1,12 +1,11 @@
-import React          from "react";
-import axios          from 'axios';
-import Container      from 'react-bootstrap/Container';
-import Row            from 'react-bootstrap/Row';
-import Col            from 'react-bootstrap/Col';
-import Average        from "./components/average-rating.jsx";
-import ReviewList     from "./components/review-list.jsx";
-import ReviewListMore from "./components/review-list-more.jsx";
-import ReviewListAll  from "./components/review-list-all.jsx";
+import React            from "react";
+import axios            from 'axios';
+import Container        from 'react-bootstrap/Container';
+import Row              from 'react-bootstrap/Row';
+import Col              from 'react-bootstrap/Col';
+import Average          from "./components/average-rating.jsx";
+import Button           from "react-bootstrap/Button";
+import MasterReviewList from "./components/master-review-list.jsx"
 
 class App extends React.Component {
   
@@ -15,8 +14,9 @@ class App extends React.Component {
     this.state = {
       moreClicked          : false,
       readAllClicked       : false,
-      currentSeller        : 'Initial State Rendering with 1 review',
-      currentAverageRating : 5,
+      currentSellerID      : 'Initial State Seller ID Placeholder',
+      currentSeller        : 'Initial State Seller Name Placeholder',
+      currentAverageRating : 2.5,
       sellerIds            : [],
       currentReviews       : [ 
                                 {
@@ -54,9 +54,10 @@ class App extends React.Component {
         const data = res.data;
         
         // define variables to modify state:
-        const currentSeller = data[0].sellerName;
-        const average       = data[0].averageRating;
-        const reviews       = [];
+        const currentSellerID = data[0].sellers_ID;
+        const currentSeller   = data[0].sellerName;
+        const average         = data[0].averageRating;
+        const reviews         = [];
 
         // fill ^reviews array with appropriate data:
         data.forEach( review => reviews.push(
@@ -73,6 +74,7 @@ class App extends React.Component {
 
         // set the state with new data:
         this.setState({
+          currentSellerID      : currentSellerID,
           currentSeller        : currentSeller,
           currentAverageRating : average,
           currentReviews       : reviews
@@ -83,62 +85,71 @@ class App extends React.Component {
 
   // Retrieve and use randomly chosen seller on refresh
   componentDidMount() {
-    axios
-      .get('/reviews/sellers')
-      .then( res => {
-        const ids  = [];
-        const data = res.data
-        data.forEach( id => ids.push(id.sellerID))
-        let randomId = ids[Math.floor(Math.random() * (101 - 1)) + 1]
-        this.retrieveSeller(randomId);
-      })
-      .catch( err => console.log(`Error retrieving seller IDs from DB`));
+
+    // this.reviewChannel.onmessage = (e) => {
+    //   this.retrieveSeller(e.data);
+    // }
+
+    // axios
+    //   .get('/reviews/sellers')
+    //   .then( res => {
+    //     const ids  = [];
+    //     const data = res.data
+    //     data.forEach( id => ids.push(id.sellerID))
+    //     let randomId = ids[Math.floor(Math.random() * (101 - 1)) + 1]
+    //     this.retrieveSeller(randomId);
+    //   })
+    //   .catch( err => console.log(`Error retrieving seller IDs from DB`));
   }
 
   render() {
     this.reviewChannel.onmessage = function(e) {
-      console.log('Received', e.data);
+      console.log('Received: ', e.data);
+      this.retrieveSeller(e.data);
     }
+
+    console.log(`Rendering reviews for: \n
+                 Seller:   ${this.state.currentSeller}\n
+                 SellerID: ${this.state.currentSellerID}`)
 
     return (
     <Container>
-       <Row>
-        <Col md={{offset: 5}}>
-          Rendering for Seller: {this.state.currentSeller}
-        </Col>
-      </Row>
-      <br />
       <Col>
         <span className='reviewsHeader'>Reviews 
           <span className='averageStars'>
             <Average
-            averageRating={this.state.currentAverageRating}
-            totalReviews={this.state.currentReviews.length}
+              averageRating={this.state.currentAverageRating}
+              totalReviews={this.state.currentReviews.length}
             />
           </span>
         </span>
       </Col>
       <Row>
         <Col>
-          <ReviewList 
-            currentReviews={this.state.currentReviews}
+          <MasterReviewList 
+            currentReviews     ={this.state.currentReviews}
+            moreClicked        ={this.state.moreClicked}
+            readAllClicked     ={this.state.readAllClicked}
+            handleReadAllClick ={this.handleReadAllReviewsClick}
           />
         </Col>
       </Row>
       <Row>
         <Col>
-          {this.state.moreClicked === true ? 
-            this.state.readAllClicked === true ?
-            <ReviewListAll 
-              currentReviews={this.state.currentReviews}
-            /> 
-            :
-            <ReviewListMore 
-              currentReviews={this.state.currentReviews}
-              moreClicked={this.state.moreClicked}
-              handleReadAllClick={this.handleReadAllReviewsClick}
-            /> : 
-            <span className='plusMore' onClick={this.handleMoreClick}>+ More</span>}
+            {this.state.moreClicked === true ?
+            this.state.readAllClicked === true ? <span /> : 
+              <Button 
+                className ='readAllReviews' 
+                variant   ="dark" 
+                size      ="lg"
+                onClick   ={this.handleReadAllReviewsClick}>
+                  Read All Reviews ({this.state.currentReviews.length-11})
+              </Button> : 
+              <span 
+                className ='plusMore' 
+                onClick   ={this.handleMoreClick}>
+                  + More
+              </span>}
         </Col>
       </Row>
       <Row><p /></Row>

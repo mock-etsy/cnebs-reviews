@@ -1,3 +1,13 @@
+.collapsed-review-list-container::after, .more-review-list-container::after {
+  content: '';
+  position: absolute;
+  display: block;
+  width: 1300px;
+  height: 100px;
+  bottom: 1px;
+  background-image: linear-gradient(to bottom, rgba(255,0,0,0), rgb(255, 255, 255));
+}
+
 .reviewsHeader {
   font-family: 'Rubik', sans-serif;
   font-weight: 500;
