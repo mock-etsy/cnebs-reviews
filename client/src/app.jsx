@@ -5,9 +5,6 @@ import Row              from 'react-bootstrap/Row';
 import Col              from 'react-bootstrap/Col';
 import Average          from "./components/average-rating.jsx";
 import Button           from "react-bootstrap/Button";
-import ReviewList       from "./components/review-list.jsx";
-import ReviewListMore   from "./components/review-list-more.jsx";
-import ReviewListAll    from "./components/review-list-all.jsx";
 import MasterReviewList from "./components/master-review-list.jsx"
 
 class App extends React.Component {
@@ -122,11 +119,6 @@ class App extends React.Component {
       </Col>
       <Row>
         <Col>
-          {/* <ReviewList 
-            currentReviews={this.state.currentReviews}
-            moreClicked={this.state.moreClicked}
-            handleReadAllClick={this.handleReadAllReviewsClick}
-          /> */}
           <MasterReviewList 
             currentReviews     ={this.state.currentReviews}
             moreClicked        ={this.state.moreClicked}
@@ -137,19 +129,8 @@ class App extends React.Component {
       </Row>
       <Row>
         <Col>
-          {/* {this.state.moreClicked === true ? 
-            this.state.readAllClicked === true ?
-            <ReviewListAll 
-              currentReviews={this.state.currentReviews}
-            /> 
-            :
-            <ReviewListMore 
-              currentReviews={this.state.currentReviews}
-              moreClicked={this.state.moreClicked}
-              handleReadAllClick={this.handleReadAllReviewsClick}
-            /> : 
-            <span className='plusMore' onClick={this.handleMoreClick}>+ More</span>} */}
-            {this.state.moreClicked === true ? 
+            {this.state.moreClicked === true ?
+            this.state.readAllClicked === true ? <span /> : 
               <Button 
                 className ='readAllReviews' 
                 variant   ="dark" 
