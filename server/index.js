@@ -22,13 +22,13 @@ app.use('/', express.static('./client/dist'));
 // // db.seedDBListingID(listData.sellerData);
 // //db.seedDBProductInfo(listData.itemIDandPhotoforCharles);
 
-// Test data generator on /test
-app.get('/reviews/test', (req, res) => {
-  res.send(fakeData.dataGen());
-})
+// // Test data generator on /test
+// app.get('/reviews/test', (req, res) => {
+//   res.send(fakeData.dataGen());
+// })
 
 // Get seller information for a single seller ID
-app.get('/reviews/sellers/:id', (req, res) => {
+app.get('/reviews/sellers/product/:id', (req, res) => {
   db.retrieveSeller( req.params.id, (err, results) => {
     if (err) console.log(err);
     res.send(results);

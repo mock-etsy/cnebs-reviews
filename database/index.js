@@ -119,6 +119,7 @@ const seedDBProductInfo = function(data) {
 };
 
 const retrieveSeller = (id, cb) => {
+
   connection.query(`
     SELECT 
       sellers_ID,
@@ -137,9 +138,9 @@ const retrieveSeller = (id, cb) => {
       sellers,
       reviews
     WHERE
-      reviews.sellers_ID = "${id}"
+      reviews.sellers_ID = (SELECT sellerID FROM sellers WHERE listingID = ${id})
     AND 
-      sellerID = "${id}";
+      sellerID = (SELECT sellerID FROM sellers WHERE listingID = ${id});
     `, 
     (error, results) => {
       if (error) {
@@ -152,9 +153,9 @@ const retrieveSeller = (id, cb) => {
 
 const retrieveSellerIds = (cb) => {
   
-  connection.query(`select sellerID from sellers;`,(error, results) => {
+  connection.query(`select listingID from sellers;`,(error, results) => {
     if (error) {
-      cb('Error retrieving seller IDs', error);
+      cb('Error retrieving listing IDs', error);
     } else {
       cb(null, results);
     }

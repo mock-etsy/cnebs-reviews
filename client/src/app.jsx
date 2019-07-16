@@ -49,15 +49,16 @@ class App extends React.Component {
   // Retrieve a seller:
   retrieveSeller(id) {
     axios
-      .get(`/reviews/sellers/${id}`)
+      .get(`/reviews/sellers/product/${id}`)
       .then( res => {
         const data = res.data;
         
         // define variables to modify state:
-        const currentSellerID = data[0].sellers_ID;
-        const currentSeller   = data[0].sellerName;
-        const average         = data[0].averageRating;
-        const reviews         = [];
+        const currentSellerID  = data[0].sellers_ID;
+        const currentSeller    = data[0].sellerName;
+        const currentProductID = data[0].listingID;
+        const average          = data[0].averageRating;
+        const reviews          = [];
 
         // fill ^reviews array with appropriate data:
         data.forEach( review => reviews.push(
@@ -76,6 +77,7 @@ class App extends React.Component {
         this.setState({
           currentSellerID      : currentSellerID,
           currentSeller        : currentSeller,
+          currentProductID     : currentProductID,
           currentAverageRating : average,
           currentReviews       : reviews
         })
@@ -88,13 +90,17 @@ class App extends React.Component {
     axios
       .get('/reviews/sellers')
       .then( res => {
+        
         const ids  = [];
         const data = res.data
-        data.forEach( id => ids.push(id.sellerID))
+
+        data.forEach( id => {
+          ids.push(id.listingID)
+        })
         let randomId = ids[Math.floor(Math.random() * (101 - 1)) + 1]
         this.retrieveSeller(randomId);
       })
-      .catch( err => console.log(`Error retrieving seller IDs from DB`));
+      .catch( err => console.log(`Error retrieving listing IDs from DB ${err}`));
   }
 
   render() {
