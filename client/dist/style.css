@@ -88,3 +88,11 @@
 .readAllReviews:hover {
   cursor: pointer;
 }
+
+.reviewerPhotosHeader {
+  font-family: 'Rubik', sans-serif;
+  font-size: 14px;
+  font-weight: 550;
+  padding-bottom: 20px;
+  color: #222;
+}

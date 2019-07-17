@@ -1,11 +1,13 @@
 import React            from "react";
 import axios            from 'axios';
+import faker            from 'faker';
 import Container        from 'react-bootstrap/Container';
 import Row              from 'react-bootstrap/Row';
 import Col              from 'react-bootstrap/Col';
 import Average          from "./components/average-rating.jsx";
 import Button           from "react-bootstrap/Button";
 import MasterReviewList from "./components/master-review-list.jsx"
+import ReviewerPhotos   from "./components/reviewer-photos.jsx";
 
 class App extends React.Component {
   
@@ -154,6 +156,9 @@ class App extends React.Component {
           </Col>
         </Row>
         <Row><p /></Row>
+        <Row>
+          <ReviewerPhotos />
+        </Row>
       </Container>
     );
   }
