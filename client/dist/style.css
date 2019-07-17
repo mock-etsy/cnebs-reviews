@@ -1,3 +1,17 @@
+.reviewsLoadingSpinnerContainer{
+  height: 10em;
+  position: relative
+}
+
+.reviewsLoadingSpinner {
+  margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%)
+}
+
 .collapsed-review-list-container::after, .more-review-list-container::after {
   content: '';
   position: absolute;
@@ -89,10 +103,72 @@
   cursor: pointer;
 }
 
+.reviewerPhotosSpacer {
+  padding-top: 20px;
+}
+
 .reviewerPhotosHeader {
   font-family: 'Rubik', sans-serif;
   font-size: 14px;
-  font-weight: 550;
+  font-weight: 600;
   padding-bottom: 20px;
   color: #222;
+}
+.reviewListFooter {
+  padding-bottom: 20px;
+}
+
+.reviewsSellerInfoHeader {
+  padding-top: 45px;
+}
+
+.reviewsSellerAvatar {
+  height: 75px;
+  width: 75px;
+}
+
+.reviewsSellerInfoBlock {
+  padding-top: 10px;
+  padding-left: 15px;
+}
+
+.reviewsSellerInfoUsername {
+  font-family: 'Rubik', sans-serif;
+  font-weight: 600;
+  font-size: 20px;
+}
+
+.reviewsSellerInfoRating {
+  font-size: 14px;
+  padding-left: 10px;
+  padding-right: 2px;
+  padding-top: 7px;
+}
+
+.reviewsSellerBSBlock {
+  padding-top: 5px;
+}
+
+.reviewsSellerInfoBSLocation {
+  font-family: 'Rubik', sans-serif;
+  font-size: 14px;
+  color: #595959;
+  padding-right: 10px;
+}
+
+.reviewsSellerInfoBSSales {
+  font-family: 'Rubik', sans-serif;
+  font-size: 14px;
+  color: #595959;
+  padding-right: 10px;
+}
+
+.reviewsSellerInfoBSSince {
+  font-family: 'Rubik', sans-serif;
+  font-size: 14px;
+  color: #595959;
+}
+
+.reviewsSellerInfoFooter {
+  padding-top: 40px;
 }

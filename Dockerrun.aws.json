@@ -1,0 +1,13 @@
+{
+  "AWSEBDockerrunVersion": "1",
+  "Image": {
+    "Name": "cnebs/regretsy-reviews",
+    "Update": "true"
+  },
+  "Ports": [
+    {
+      "ContainerPort": "3002"
+    }
+  ],
+  "Logging": "/var/log/nginx"
+ }

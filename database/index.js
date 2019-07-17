@@ -1,9 +1,50 @@
 const mysql      = require('mysql');
 const config     = require('../config.js');
 
-const connection = mysql.createConnection(config.DBCONFIG);
+// const connection = mysql.createConnection(config.DBCONFIG);
+const connection = mysql.createConnection({
+  host       : process.env.RDS_HOSTNAME,
+  user       : process.env.RDS_USERNAME,
+  password   : process.env.RDS_PASSWORD,
+  port       : process.env.RDS_PORT,
+  database   : process.env.RDS_DB_NAME
+});
+
 
 connection.connect();
+
+/*
+// FOR DOCKER:
+// connection.query(`DROP TABLE IF EXISTS reviews, sellers;`);
+
+// connection.query(`
+//   CREATE TABLE sellers (
+//     sellerID VARCHAR(500) PRIMARY KEY,
+//     sellerName VARCHAR(500),
+//     sellerUsername VARCHAR(500),
+//     sellerAvatar VARCHAR(500),
+//     averageRating INT,
+//     listingID INT,
+//     productTitle VARCHAR(500),
+//     productImage VARCHAR(500)
+//   );
+// `);
+
+// connection.query(`
+//   CREATE TABLE reviews (
+//       reviewerID VARCHAR(500) PRIMARY KEY,
+//       reviewerName VARCHAR(500),
+//       reviewerAvatar VARCHAR(500),
+//       reviewDate VARCHAR(500),
+//       reviewRating INT,
+//       reviewText TEXT,
+//       sellers_ID VARCHAR(500),
+//       FOREIGN KEY (sellers_ID)
+//         REFERENCES sellers(sellerID)
+//   );
+// `);
+^ FOR DOCKER ^
+*/
 
 // Confirm connection
 const test = () => {
@@ -124,6 +165,7 @@ const retrieveSeller = (id, cb) => {
     SELECT 
       sellers_ID,
       sellerName,
+      sellerUsername,
       sellerAvatar,
       listingID,
       productTitle,

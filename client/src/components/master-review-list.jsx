@@ -11,7 +11,6 @@ const MasterReviewList = (props) => {
         {typeof props.currentReviews[1] !== 'undefined' ? <Review currentReviews={props.currentReviews[1]}/> : <div />}
         {typeof props.currentReviews[2] !== 'undefined' ? <Review currentReviews={props.currentReviews[2]}/> : <div />}
         {typeof props.currentReviews[3] !== 'undefined' ? <Review currentReviews={props.currentReviews[3]}/> : <div />}
-        {typeof props.currentReviews[4] !== 'undefined' ? <Review currentReviews={props.currentReviews[4]}/> : <div />}
       </div>
     );
   }
