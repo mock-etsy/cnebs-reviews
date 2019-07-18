@@ -7,8 +7,8 @@ import Average          from "./components/average-rating.jsx";
 import Button           from "react-bootstrap/Button";
 import Spinner          from 'react-bootstrap/Spinner';
 import MasterReviewList from "./components/master-review-list.jsx"
-import ReviewerPhotos   from "./components/reviewer-photos.jsx";
 import SellerFooterInfo from "./components/seller-information.jsx"
+// import ReviewerPhotos   from "./components/reviewer-photos.jsx";
 
 class App extends React.Component {
   
@@ -202,7 +202,7 @@ class App extends React.Component {
 
 
         {/* Carousel (not yet) of Reviewer Product Images */}
-        <Row>
+        {/* <Row>
           <ReviewerPhotos />
         </Row>
         <Row>
@@ -210,7 +210,7 @@ class App extends React.Component {
         </Row>
 
           <div className="reviewsLineBreakHeader"></div>
-          <span> <hr className="reviewsFooterLineBreak"></hr> </span>
+          <span> <hr className="reviewsFooterLineBreak"></hr> </span> */}
 
 
         {/* Current Seller Information */}
