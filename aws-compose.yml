@@ -1,0 +1,6 @@
+web:
+  image: cnebs/regretsy-reviews
+  cpu_shares: 100
+  mem_limit: 262144000
+  ports:
+    - "80:3002"

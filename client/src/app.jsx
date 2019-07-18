@@ -5,20 +5,27 @@ import Row              from 'react-bootstrap/Row';
 import Col              from 'react-bootstrap/Col';
 import Average          from "./components/average-rating.jsx";
 import Button           from "react-bootstrap/Button";
+import Spinner          from 'react-bootstrap/Spinner';
 import MasterReviewList from "./components/master-review-list.jsx"
+import ReviewerPhotos   from "./components/reviewer-photos.jsx";
+import SellerFooterInfo from "./components/seller-information.jsx"
 
 class App extends React.Component {
   
   constructor(props) {
     super(props);
     this.state = {
-      moreClicked          : false,
-      readAllClicked       : false,
-      currentSellerID      : 'Initial State Seller ID Placeholder',
-      currentSeller        : 'Initial State Seller Name Placeholder',
-      currentAverageRating : 2.5,
-      sellerIds            : [],
-      currentReviews       : [ 
+      loading               : false,
+      moreClicked           : false,
+      readAllClicked        : false,
+      currentSellerID       : 'Initial State Seller ID Placeholder',
+      currentSellerUsername : 'Initial State Seller Username Placeholder',
+      currentSeller         : 'Initial State Seller Name Placeholder',
+      currentSellerAvatar   : 'https://s3.amazonaws.com/uifaces/faces/twitter/SlaapMe/128.jpg',
+      currentProductID      : 'Initial State Product ID Placeholder',
+      currentAverageRating  : 2.5,
+      sellerIds             : [],
+      currentReviews        : [ 
                                 {
                                   name   : "Elijah Keebler",
                                   date   : "2019-04-03T18:07:56.183Z",
@@ -48,47 +55,55 @@ class App extends React.Component {
 
   // Retrieve a seller:
   retrieveSeller(id) {
+    this.setState({loading: true});
     axios
-      .get(`/reviews/sellers/product/${id}`)
+      .get(`http://regretsyreviews-env.5sjqpmny7c.us-east-2.elasticbeanstalk.com/reviews/sellers/product/${id}`)
+      // .get(`/reviews/sellers/product/${id}`)
       .then( res => {
         const data = res.data;
         
         // define variables to modify state:
-        const currentSellerID  = data[0].sellers_ID;
-        const currentSeller    = data[0].sellerName;
-        const currentProductID = data[0].listingID;
-        const average          = data[0].averageRating;
-        const reviews          = [];
+        const currentSellerID       = data[0].sellers_ID;
+        const currentSellerUsername = data[0].sellerUsername;
+        const currentSeller         = data[0].sellerName;
+        const currentProductID      = data[0].listingID;
+        const currentSellerAvatar   = data[0].sellerAvatar
+        const average               = data[0].averageRating;
+        const reviews               = [];
 
         // fill ^reviews array with appropriate data:
         data.forEach( review => reviews.push(
           {
-            name        : review.reviewerName, 
-            avatar      : review.reviewerAvatar,
-            date        : review.reviewDate, 
-            rating      : review.reviewRating, 
-            review      : review.reviewText,
-            productImage: review.productImage,
-            productTitle: review.productTitle
+            name         : review.reviewerName, 
+            avatar       : review.reviewerAvatar,
+            date         : review.reviewDate, 
+            rating       : review.reviewRating, 
+            review       : review.reviewText,
+            productImage : review.productImage,
+            productTitle : review.productTitle
           }
         ));
 
         // set the state with new data:
         this.setState({
-          currentSellerID      : currentSellerID,
-          currentSeller        : currentSeller,
-          currentProductID     : currentProductID,
-          currentAverageRating : average,
-          currentReviews       : reviews
+          currentSellerID       : currentSellerID,
+          currentSeller         : currentSeller,
+          currentSellerUsername : currentSellerUsername,
+          currentSellerAvatar   : currentSellerAvatar,
+          currentProductID      : currentProductID,
+          currentAverageRating  : average,
+          currentReviews        : reviews,
+          loading               : false
         })
       })
       .catch( err => console.log(`Error retrieving seller info for id ${id}:\n${err}`) );
   }
 
-  // Retrieve and use randomly chosen seller on refresh
+  // If no message bus data: render from randomly selected seller using listing id
   componentDidMount() {
     axios
-      .get('/reviews/sellers')
+      .get('http://regretsyreviews-env.5sjqpmny7c.us-east-2.elasticbeanstalk.com/reviews/sellers')
+      // .get('/reviews/sellers')
       .then( res => {
         
         const ids  = [];
@@ -105,13 +120,12 @@ class App extends React.Component {
 
   render() {
     this.reviewChannel.onmessage = (e) => {
+      console.log(`Reviews recieved listing ID ${e.data} on channel 'regretfully'`);
       this.retrieveSeller(e.data);
     }
 
     console.log(`Rendering reviews for: \n
-                 Seller:   ${this.state.currentSeller}\n
-                 SellerID: ${this.state.currentSellerID}\n
-                 Product:  ${this.state.currentReviews[0].productTitle}`)
+                 ProductID: ${this.state.currentProductID}`)
 
     return (
       <Container>
@@ -125,16 +139,36 @@ class App extends React.Component {
             </span>
           </span>
         </Col>
+
+
         <Row>
           <Col>
-            <MasterReviewList 
-              currentReviews     ={this.state.currentReviews}
-              moreClicked        ={this.state.moreClicked}
-              readAllClicked     ={this.state.readAllClicked}
-              handleReadAllClick ={this.handleReadAllReviewsClick}
-            />
+            {
+              this.state.loading === true ? 
+
+              <Row>
+                <Col></Col>
+                <Col>
+                  <div className="reviewsLoadingSpinnerContainer">
+                    <Spinner animation="border" role="status" size="lg">
+                      <span className="reviewsLoadingSpinner"></span>
+                    </Spinner>
+                  </div>
+                </Col>
+                <Col></Col>
+              </Row> :
+
+              <MasterReviewList
+                currentReviews     ={this.state.currentReviews}
+                moreClicked        ={this.state.moreClicked}
+                readAllClicked     ={this.state.readAllClicked}
+                handleReadAllClick ={this.handleReadAllReviewsClick}
+              />
+            }
           </Col>
         </Row>
+
+
         <Row>
           <Col>
               {this.state.moreClicked === true ?
@@ -153,7 +187,24 @@ class App extends React.Component {
                 </span>}
           </Col>
         </Row>
-        <Row><p /></Row>
+        <Row><p className="reviewListFooter"/></Row>
+
+
+        <Row>
+          <ReviewerPhotos />
+        </Row>
+        <Row><p className="reviewsFooter"/></Row>
+
+
+        <Row><p className="reviewsSellerInfoHeader" /></Row>
+          <SellerFooterInfo 
+            currentSellerAvatar   ={this.state.currentSellerAvatar}
+            currentSellerUsername ={this.state.currentSellerUsername}
+            currentAverageRating  ={this.state.currentAverageRating}
+            numberOfReviews       ={this.state.currentReviews.length}
+          />
+        <Row><p className="reviewsSellerInfoFooter" /></Row>
+
       </Container>
     );
   }
