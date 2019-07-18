@@ -43,7 +43,7 @@ const SellerFooterInfo = (props) => {
                 emptySymbol='fa fa-star-o fa-1x'
                 initialRating={props.currentAverageRating}
               />
-              <span className="totalReviews">({props.numberOfReviews})</span>
+              <span className="reviewsSellerInfoTotalReviews">({props.numberOfReviews})</span>
             </div>
           </Row>
           <Row>

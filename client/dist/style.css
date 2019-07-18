@@ -52,6 +52,11 @@
   padding-top: 3px;
 }
 
+.reviewName:hover {
+  color: #575757;
+  cursor: pointer;
+}
+
 .reviewDate {
   font-size: 14px;
   padding-left: 8px;
@@ -143,6 +148,16 @@
   padding-left: 10px;
   padding-right: 2px;
   padding-top: 7px;
+}
+
+.reviewsSellerInfoTotalReviews {
+  font-size: 15px;
+  text-decoration: underline;
+  color: #6d6d6d;
+}
+
+.reviewsSellerInfoTotalReviews:hover {
+  cursor: pointer;
 }
 
 .reviewsSellerBSBlock {

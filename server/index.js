@@ -18,9 +18,9 @@ app.use(cors());
 app.use('/', express.static('./client/dist'));
 
 // database seeding functions:
-// db.seedDB(data);
-// db.seedDBListingID(listData.sellerData);
-// db.seedDBProductInfo(listData.itemIDandPhotoforCharles);
+// // db.seedDB(data);
+// // db.seedDBListingID(listData.sellerData);
+// // db.seedDBProductInfo(listData.itemIDandPhotoforCharles);
 
 // // Test data generator on /test
 // app.get('/reviews/test', (req, res) => {

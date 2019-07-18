@@ -4,7 +4,7 @@ import Image      from 'react-bootstrap/Image'
 
 const ReviewerPhoto = (props) => {
   return (
-    <Image src={`${faker.image.image()}`} thumbnail /> 
+    <Image src={`${faker.random.image()}`} thumbnail />
   )
 }
 
