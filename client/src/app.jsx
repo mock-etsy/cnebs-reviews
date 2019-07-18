@@ -44,16 +44,17 @@ class App extends React.Component {
     this.handleReadAllReviewsClick = this.handleReadAllReviewsClick.bind(this);
   }
 
+  // Handle clicking [ More + ] button:
   handleMoreClick() {
     this.setState({moreClicked:true});
   }
 
+  // Handle clicking [ Read All Reviews ] button:
   handleReadAllReviewsClick() {
     this.setState({readAllClicked:true});
-    console.log(this.state.readAllClicked);
   }
 
-  // Retrieve a seller:
+  // Retrieve a seller (now using a product listing ID from message bus):
   retrieveSeller(id) {
     this.setState({loading: true});
     axios
@@ -99,7 +100,7 @@ class App extends React.Component {
       .catch( err => console.log(`Error retrieving seller info for id ${id}:\n${err}`) );
   }
 
-  // If no message bus data: render from randomly selected seller using listing id
+  // If no message bus data: render from randomly selected seller using listing id:
   componentDidMount() {
     axios
       .get('http://regretsyreviews-env.5sjqpmny7c.us-east-2.elasticbeanstalk.com/reviews/sellers')
@@ -119,16 +120,20 @@ class App extends React.Component {
   }
 
   render() {
+    // Listen for a product listing ID from message bus:
     this.reviewChannel.onmessage = (e) => {
       console.log(`Reviews recieved listing ID ${e.data} on channel 'regretfully'`);
       this.retrieveSeller(e.data);
     }
-
+    // Log source of rendering from state:
     console.log(`Rendering reviews for: \n
                  ProductID: ${this.state.currentProductID}`)
 
+    // Return our microservice:
     return (
       <Container>
+
+        {/* Reviews Header & Average Star Ratings */}
         <Col>
           <span className='reviewsHeader'>Reviews 
             <span className='averageStars'>
@@ -140,7 +145,7 @@ class App extends React.Component {
           </span>
         </Col>
 
-
+        {/* Conditionally Rendering Review List */}
         <Row>
           <Col>
             {
@@ -168,7 +173,7 @@ class App extends React.Component {
           </Col>
         </Row>
 
-
+        {/* Conditionally Rendering Expansion Buttons */}
         <Row>
           <Col>
               {this.state.moreClicked === true ?
@@ -189,13 +194,13 @@ class App extends React.Component {
         </Row>
         <Row><p className="reviewListFooter"/></Row>
 
-
+        {/* Carousel (not yet) of Reviewer Product Images */}
         <Row>
           <ReviewerPhotos />
         </Row>
         <Row><p className="reviewsFooter"/></Row>
 
-
+        {/* Current Seller Information Footer */}
         <Row><p className="reviewsSellerInfoHeader" /></Row>
           <SellerFooterInfo 
             currentSellerAvatar   ={this.state.currentSellerAvatar}
