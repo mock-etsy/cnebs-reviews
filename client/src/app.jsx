@@ -9,7 +9,6 @@ import Spinner          from 'react-bootstrap/Spinner';
 import MasterReviewList from "./components/master-review-list.jsx"
 import ReviewerPhotos   from "./components/reviewer-photos.jsx";
 import SellerFooterInfo from "./components/seller-information.jsx"
-// import MeetTheOwner     from "./components/meet-the-owner.jsx"
 
 class App extends React.Component {
   

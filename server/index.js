@@ -1,11 +1,9 @@
-const express    = require('express');
-const bodyParser = require('body-parser');
-const path       = require('path');
-const cors       = require('cors');
-const db         = require('../database/index');
-const data       = require('../database/data');
-const listData   = require('../database/forCharles');
-const fakeData   = require('../database/utilities/dataGenerator')
+const express     = require('express');
+const cors        = require('cors');
+const db          = require('../database/index');
+const data        = require('../database/data');
+const listData    = require('../database/forCharles');
+const compression = require('compression');
 
 const { PORT, HOST } = require('../config.js')
 
@@ -15,6 +13,7 @@ const port = PORT || 3002;
 const host = HOST || '0.0.0.0';
 
 app.use(cors());
+app.use(compression());
 app.use('/', express.static('./client/dist'));
 
 // database seeding functions:

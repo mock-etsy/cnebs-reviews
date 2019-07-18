@@ -5,8 +5,6 @@ import Row           from 'react-bootstrap/Row';
 import Col           from 'react-bootstrap/Col';
 import dateConverter from "./dateConverter.jsx"
 
-
-
 const reviewBuilder = (data) => {
   return (
     <Container>
