@@ -9,6 +9,7 @@ import Spinner          from 'react-bootstrap/Spinner';
 import MasterReviewList from "./components/master-review-list.jsx"
 import ReviewerPhotos   from "./components/reviewer-photos.jsx";
 import SellerFooterInfo from "./components/seller-information.jsx"
+// import MeetTheOwner     from "./components/meet-the-owner.jsx"
 
 class App extends React.Component {
   
@@ -63,16 +64,18 @@ class App extends React.Component {
       .then( res => {
         const data = res.data;
         
-        // define variables to modify state:
+        // define variables to modify state, using DB data:
         const currentSellerID       = data[0].sellers_ID;
         const currentSellerUsername = data[0].sellerUsername;
         const currentSeller         = data[0].sellerName;
         const currentProductID      = data[0].listingID;
         const currentSellerAvatar   = data[0].sellerAvatar
         const average               = data[0].averageRating;
+
+        // Will hold all seller's reviewer's information as objects inside the array
         const reviews               = [];
 
-        // fill ^reviews array with appropriate data:
+        // fill ^reviews array with appropriate review data:
         data.forEach( review => reviews.push(
           {
             name         : review.reviewerName, 
@@ -113,6 +116,7 @@ class App extends React.Component {
         data.forEach( id => {
           ids.push(id.listingID)
         })
+        console.log('Generating a random ID')
         let randomId = ids[Math.floor(Math.random() * (101 - 1)) + 1]
         this.retrieveSeller(randomId);
       })
@@ -125,6 +129,7 @@ class App extends React.Component {
       console.log(`Reviews recieved listing ID ${e.data} on channel 'regretfully'`);
       this.retrieveSeller(e.data);
     }
+
     // Log source of rendering from state:
     console.log(`Rendering reviews for: \n
                  ProductID: ${this.state.currentProductID}`)
@@ -144,6 +149,7 @@ class App extends React.Component {
             </span>
           </span>
         </Col>
+
 
         {/* Conditionally Rendering Review List */}
         <Row>
@@ -173,6 +179,7 @@ class App extends React.Component {
           </Col>
         </Row>
 
+
         {/* Conditionally Rendering Expansion Buttons */}
         <Row>
           <Col>
@@ -194,13 +201,20 @@ class App extends React.Component {
         </Row>
         <Row><p className="reviewListFooter"/></Row>
 
+
         {/* Carousel (not yet) of Reviewer Product Images */}
         <Row>
           <ReviewerPhotos />
         </Row>
-        <Row><p className="reviewsFooter"/></Row>
+        <Row>
+          <p className="reviewsFooter"/>
+        </Row>
 
-        {/* Current Seller Information Footer */}
+          <div className="reviewsLineBreakHeader"></div>
+          <span> <hr className="reviewsFooterLineBreak"></hr> </span>
+
+
+        {/* Current Seller Information */}
         <Row><p className="reviewsSellerInfoHeader" /></Row>
           <SellerFooterInfo 
             currentSellerAvatar   ={this.state.currentSellerAvatar}
@@ -210,6 +224,11 @@ class App extends React.Component {
           />
         <Row><p className="reviewsSellerInfoFooter" /></Row>
 
+
+        {/* Horizontal Line */} 
+        <Row>       
+        <span> <hr className="reviewsFooterLineBreak"></hr> </span>
+        </Row>
       </Container>
     );
   }

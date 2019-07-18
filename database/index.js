@@ -3,18 +3,18 @@ const config     = require('../config.js');
 
 // const connection = mysql.createConnection(config.DBCONFIG);
 const connection = mysql.createConnection({
-  host       : process.env.RDS_HOSTNAME,
-  user       : process.env.RDS_USERNAME,
-  password   : process.env.RDS_PASSWORD,
-  port       : process.env.RDS_PORT,
-  database   : process.env.RDS_DB_NAME
+  host       : process.env.RDS_HOSTNAME || config.DBCONFIG.host,
+  user       : process.env.RDS_USERNAME || config.DBCONFIG.user,
+  password   : process.env.RDS_PASSWORD || config.DBCONFIG.password,
+  port       : process.env.RDS_PORT     || 3306,
+  database   : process.env.RDS_DB_NAME  || config.DBCONFIG.database
 });
 
 
 connection.connect();
 
 /*
-// FOR DOCKER:
+// FOR DOCKER RE-SEEDING:
 // connection.query(`DROP TABLE IF EXISTS reviews, sellers;`);
 
 // connection.query(`
@@ -43,7 +43,7 @@ connection.connect();
 //         REFERENCES sellers(sellerID)
 //   );
 // `);
-^ FOR DOCKER ^
+^ FOR DOCKER RE-SEEDING^
 */
 
 // Confirm connection

@@ -5,6 +5,8 @@ import Row           from 'react-bootstrap/Row';
 import Col           from 'react-bootstrap/Col';
 import dateConverter from "./dateConverter.jsx"
 
+
+
 const reviewBuilder = (data) => {
   return (
     <Container>
@@ -14,7 +16,7 @@ const reviewBuilder = (data) => {
         </Col>
         <Col>
           <Row>
-            <span className='reviewName'>{data.name}</span>
+            <span className='reviewName'>{data.name}</span>  
             <span className='reviewDate'>{` ${dateConverter(data.date)}`}</span>
           </Row>
           <Row>
