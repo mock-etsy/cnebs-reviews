@@ -7,8 +7,8 @@ import Average          from "./components/average-rating.jsx";
 import Button           from "react-bootstrap/Button";
 import Spinner          from 'react-bootstrap/Spinner';
 import MasterReviewList from "./components/master-review-list.jsx"
-import ReviewerPhotos   from "./components/reviewer-photos.jsx";
 import SellerFooterInfo from "./components/seller-information.jsx"
+// import ReviewerPhotos   from "./components/reviewer-photos.jsx";
 
 class App extends React.Component {
   
@@ -44,16 +44,17 @@ class App extends React.Component {
     this.handleReadAllReviewsClick = this.handleReadAllReviewsClick.bind(this);
   }
 
+  // Handle clicking [ More + ] button:
   handleMoreClick() {
     this.setState({moreClicked:true});
   }
 
+  // Handle clicking [ Read All Reviews ] button:
   handleReadAllReviewsClick() {
     this.setState({readAllClicked:true});
-    console.log(this.state.readAllClicked);
   }
 
-  // Retrieve a seller:
+  // Retrieve a seller (now using a product listing ID from message bus):
   retrieveSeller(id) {
     this.setState({loading: true});
     axios
@@ -62,16 +63,18 @@ class App extends React.Component {
       .then( res => {
         const data = res.data;
         
-        // define variables to modify state:
+        // define variables to modify state, using DB data:
         const currentSellerID       = data[0].sellers_ID;
         const currentSellerUsername = data[0].sellerUsername;
         const currentSeller         = data[0].sellerName;
         const currentProductID      = data[0].listingID;
         const currentSellerAvatar   = data[0].sellerAvatar
         const average               = data[0].averageRating;
+
+        // Will hold all seller's reviewer's information as objects inside the array
         const reviews               = [];
 
-        // fill ^reviews array with appropriate data:
+        // fill ^reviews array with appropriate review data:
         data.forEach( review => reviews.push(
           {
             name         : review.reviewerName, 
@@ -99,7 +102,7 @@ class App extends React.Component {
       .catch( err => console.log(`Error retrieving seller info for id ${id}:\n${err}`) );
   }
 
-  // If no message bus data: render from randomly selected seller using listing id
+  // If no message bus data: render from randomly selected seller using listing id:
   componentDidMount() {
     axios
       .get('http://regretsyreviews-env.5sjqpmny7c.us-east-2.elasticbeanstalk.com/reviews/sellers')
@@ -112,6 +115,7 @@ class App extends React.Component {
         data.forEach( id => {
           ids.push(id.listingID)
         })
+        console.log('Generating a random ID')
         let randomId = ids[Math.floor(Math.random() * (101 - 1)) + 1]
         this.retrieveSeller(randomId);
       })
@@ -119,16 +123,21 @@ class App extends React.Component {
   }
 
   render() {
+    // Listen for a product listing ID from message bus:
     this.reviewChannel.onmessage = (e) => {
       console.log(`Reviews recieved listing ID ${e.data} on channel 'regretfully'`);
       this.retrieveSeller(e.data);
     }
 
+    // Log source of rendering from state:
     console.log(`Rendering reviews for: \n
                  ProductID: ${this.state.currentProductID}`)
 
+    // Return our microservice:
     return (
       <Container>
+
+        {/* Reviews Header & Average Star Ratings */}
         <Col>
           <span className='reviewsHeader'>Reviews 
             <span className='averageStars'>
@@ -141,6 +150,7 @@ class App extends React.Component {
         </Col>
 
 
+        {/* Conditionally Rendering Review List */}
         <Row>
           <Col>
             {
@@ -169,6 +179,7 @@ class App extends React.Component {
         </Row>
 
 
+        {/* Conditionally Rendering Expansion Buttons */}
         <Row>
           <Col>
               {this.state.moreClicked === true ?
@@ -190,12 +201,19 @@ class App extends React.Component {
         <Row><p className="reviewListFooter"/></Row>
 
 
-        <Row>
+        {/* Carousel (not yet) of Reviewer Product Images */}
+        {/* <Row>
           <ReviewerPhotos />
         </Row>
-        <Row><p className="reviewsFooter"/></Row>
+        <Row>
+          <p className="reviewsFooter"/>
+        </Row>
+
+          <div className="reviewsLineBreakHeader"></div>
+          <span> <hr className="reviewsFooterLineBreak"></hr> </span> */}
 
 
+        {/* Current Seller Information */}
         <Row><p className="reviewsSellerInfoHeader" /></Row>
           <SellerFooterInfo 
             currentSellerAvatar   ={this.state.currentSellerAvatar}
@@ -205,6 +223,11 @@ class App extends React.Component {
           />
         <Row><p className="reviewsSellerInfoFooter" /></Row>
 
+
+        {/* Horizontal Line */} 
+        <Row>       
+        <span> <hr className="reviewsFooterLineBreak"></hr> </span>
+        </Row>
       </Container>
     );
   }
