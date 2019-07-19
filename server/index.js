@@ -36,6 +36,8 @@ app.get('/reviews/sellers/product/:id', (req, res) => {
   });
 })
 
+app.get('/reviews/tests/knex', (req, res) => {db.retrieveSeller(674905924);});
+
 // Get seller IDs from database
 app.get('/reviews/sellers', (req, res) => {
   db.retrieveSellerIds( (err, results) => {

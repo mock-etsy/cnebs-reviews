@@ -1,7 +1,6 @@
 const mysql      = require('mysql');
 const config     = require('../config.js');
 
-// const connection = mysql.createConnection(config.DBCONFIG);
 const connection = mysql.createConnection({
   host       : process.env.RDS_HOSTNAME || config.DBCONFIG.host,
   user       : process.env.RDS_USERNAME || config.DBCONFIG.user,
@@ -10,6 +9,16 @@ const connection = mysql.createConnection({
   database   : process.env.RDS_DB_NAME  || config.DBCONFIG.database
 });
 
+const knex = require('knex') ({
+  client: 'mysql',
+  connection: {
+    host       : process.env.RDS_HOSTNAME || config.DBCONFIG.host,
+    user       : process.env.RDS_USERNAME || config.DBCONFIG.user,
+    password   : process.env.RDS_PASSWORD || config.DBCONFIG.password,
+    port       : process.env.RDS_PORT     || 3306,
+    database   : process.env.RDS_DB_NAME  || config.DBCONFIG.database 
+  }
+})
 
 connection.connect();
 
@@ -45,14 +54,6 @@ connection.connect();
 // `);
 ^ FOR DOCKER RE-SEEDING^
 */
-
-// Confirm connection
-const test = () => {
-  connection.query('SELECT 1 + 1 AS solution', function (error, results, fields) {
-    if (error) throw error;
-    console.log('The solution is: ', results[0].solution);
-  });
-}
 
 // Seed database
 const seedDB = ( data ) => {
@@ -159,8 +160,7 @@ const seedDBProductInfo = function(data) {
   });
 };
 
-const retrieveSeller = (id, cb) => {
-
+const retrieveSellerDEPRECATED = (id, cb) => {
   connection.query(`
     SELECT 
       sellers_ID,
@@ -193,6 +193,61 @@ const retrieveSeller = (id, cb) => {
     });
 }
 
+const retrieveSeller = id => {
+
+  const subquery = knex.select('sellerID').from('sellers').where({ listingID : id })
+
+  knex(knex.raw('sellers, reviews')).where({
+    'reviews.sellers_ID' : subquery,
+    'sellerID'           : subquery
+  }).select(
+    'sellers_ID',
+    'sellerName',
+    'sellerUsername',
+    'sellerAvatar',
+    'listingID',
+    'productTitle',
+    'productImage',
+    'averageRating',
+    'reviewerName',
+    'reviewerAvatar',
+    'reviewDate',
+    'reviewRating',
+    'reviewText'
+  )
+
+  // knex.select('sellerID', 'reviewerName').from(knex.raw('sellers, reviews'))
+
+  // knex.select(
+  //     'sellers_ID',
+  //     'sellerName',
+  //     'sellerUsername',
+  //     'sellerAvatar',
+  //     'listingID',
+  //     'productTitle',
+  //     'productImage',
+  //     'averageRating',
+  //     'reviewerName',
+  //     'reviewerAvatar',
+  //     'reviewDate',
+  //     'reviewRating',
+  //     'reviewText'
+  //   ).from(
+  //     knex.raw('sellers, reviews')
+  //   )
+  //   .where({
+  //     'reviews.sellers_ID': subquery,
+  //     'sellerID'          : subquery
+  //   })
+
+    .then( result => {
+      console.log('knex query result: ', result);
+    })
+    .catch( error => {
+      console.log('knex error: ', error)
+    })
+}
+
 const retrieveSellerIds = (cb) => {
   
   connection.query(`select listingID from sellers;`,(error, results) => {
@@ -204,4 +259,4 @@ const retrieveSellerIds = (cb) => {
   })
 }
 
-module.exports = { test, seedDB, retrieveSeller, retrieveSellerIds, seedDBListingID, seedDBProductInfo }
+module.exports = { seedDB, retrieveSeller, retrieveSellerIds, seedDBListingID, seedDBProductInfo }
