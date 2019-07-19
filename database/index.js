@@ -1,6 +1,8 @@
 const mysql      = require('mysql');
 const config     = require('../config.js');
 
+/*
+// Uncomment to use MySQL instead of knex
 const connection = mysql.createConnection({
   host       : process.env.RDS_HOSTNAME || config.DBCONFIG.host,
   user       : process.env.RDS_USERNAME || config.DBCONFIG.user,
@@ -8,22 +10,14 @@ const connection = mysql.createConnection({
   port       : process.env.RDS_PORT     || 3306,
   database   : process.env.RDS_DB_NAME  || config.DBCONFIG.database
 });
-
-const knex = require('knex') ({
-  client: 'mysql',
-  connection: {
-    host       : process.env.RDS_HOSTNAME || config.DBCONFIG.host,
-    user       : process.env.RDS_USERNAME || config.DBCONFIG.user,
-    password   : process.env.RDS_PASSWORD || config.DBCONFIG.password,
-    port       : process.env.RDS_PORT     || 3306,
-    database   : process.env.RDS_DB_NAME  || config.DBCONFIG.database 
-  }
-})
-
 connection.connect();
+*/
+
 
 /*
-// FOR DOCKER RE-SEEDING:
+// // *** FOR DOCKER RE-SEEDING ***
+// // If uncommented, will reset the contents of the database on save
+
 // connection.query(`DROP TABLE IF EXISTS reviews, sellers;`);
 
 // connection.query(`
@@ -55,7 +49,10 @@ connection.connect();
 ^ FOR DOCKER RE-SEEDING^
 */
 
-// Seed database
+/*
+// *** SEEDING FUNCTIONS ***
+// **** NOT USING KNEX ****
+//
 const seedDB = ( data ) => {
   const fullData = data.data.data;
 
@@ -159,8 +156,22 @@ const seedDBProductInfo = function(data) {
     );
   });
 };
+// End of seeding functions
+*/
+
+const knex = require('knex') ({
+  client: 'mysql',
+  connection: {
+    host       : process.env.RDS_HOSTNAME || config.DBCONFIG.host,
+    user       : process.env.RDS_USERNAME || config.DBCONFIG.user,
+    password   : process.env.RDS_PASSWORD || config.DBCONFIG.password,
+    port       : process.env.RDS_PORT     || 3306,
+    database   : process.env.RDS_DB_NAME  || config.DBCONFIG.database 
+  }
+})
 
 // refactored with knex
+// retrieves data for rendering when given a listing ID
 const retrieveSeller = id => {
   const subquery = knex.select('sellerID').from('sellers').where({ listingID : id })
   
@@ -193,6 +204,7 @@ const retrieveSeller = id => {
 }
 
 // refactored with knex
+// retrieves an array of all listing IDs stored
 const retrieveSellerIds = () => {
   knex('sellers')
   .select('listingID')
@@ -243,4 +255,12 @@ const retrieveSellerIdsDEPRECATED = (cb) => {
   })
 }
 
-module.exports = { seedDB, retrieveSeller, retrieveSellerIds, seedDBListingID, seedDBProductInfo }
+// Uncomment seeding functions to be used
+module.exports = 
+{ 
+  // seedDB, 
+  // seedDBListingID, 
+  // seedDBProductInfo, 
+  retrieveSeller, 
+  retrieveSellerIds 
+}
