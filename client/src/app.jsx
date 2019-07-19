@@ -22,7 +22,7 @@ class App extends React.Component {
       currentSellerUsername : 'Initial State Seller Username Placeholder',
       currentSeller         : 'Initial State Seller Name Placeholder',
       currentSellerAvatar   : 'https://s3.amazonaws.com/uifaces/faces/twitter/SlaapMe/128.jpg',
-      currentProductID      : 'Initial State Product ID Placeholder',
+      currentProductID      : 'Initial State Placeholder',
       currentAverageRating  : 2.5,
       sellerIds             : [],
       currentReviews        : [ 
@@ -44,6 +44,7 @@ class App extends React.Component {
     this.handleReadAllReviewsClick = this.handleReadAllReviewsClick.bind(this);
   }
 
+
   // Handle clicking [ More + ] button:
   handleMoreClick() {
     this.setState({moreClicked:true});
@@ -56,7 +57,21 @@ class App extends React.Component {
 
   // Retrieve a seller (now using a product listing ID from message bus):
   retrieveSeller(id) {
+
+    const styles = [
+      'background: linear-gradient(#D33106, #571402)'
+      , 'border: 1px solid #3E0E02'
+      , 'color: white'
+      , 'display: block'
+      , 'text-shadow: 0 1px 0 rgba(0, 0, 0, 0.3)'
+      , 'box-shadow: 0 1px 0 rgba(255, 255, 255, 0.4) inset, 0 5px 3px -5px rgba(0, 0, 0, 0.5), 0 -13px 5px -10px rgba(255, 255, 255, 0.4) inset'
+      , 'line-height: 40px'
+      , 'text-align: center'
+      , 'font-weight: bold'
+    ].join(';');
+
     this.setState({loading: true});
+    console.log('%c[REVIEWS]', styles,' fetching data for new listing ID')
     axios
       .get(`http://regretsyreviews-env.5sjqpmny7c.us-east-2.elasticbeanstalk.com/reviews/sellers/product/${id}`)
       // .get(`/reviews/sellers/product/${id}`)
@@ -97,25 +112,40 @@ class App extends React.Component {
           currentAverageRating  : average,
           currentReviews        : reviews,
           loading               : false
-        })
+        });
+        console.log('%c[REVIEWS]', styles,` rendering for listing ID ${this.state.currentProductID}...`);
       })
       .catch( err => console.log(`Error retrieving seller info for id ${id}:\n${err}`) );
   }
 
   // If no message bus data: render from randomly selected seller using listing id:
   componentDidMount() {
+
+    const styles = [
+      'background: linear-gradient(#D33106, #571402)'
+      , 'border: 1px solid #3E0E02'
+      , 'color: white'
+      , 'display: block'
+      , 'text-shadow: 0 1px 0 rgba(0, 0, 0, 0.3)'
+      , 'box-shadow: 0 1px 0 rgba(255, 255, 255, 0.4) inset, 0 5px 3px -5px rgba(0, 0, 0, 0.5), 0 -13px 5px -10px rgba(255, 255, 255, 0.4) inset'
+      , 'line-height: 40px'
+      , 'text-align: center'
+      , 'font-weight: bold'
+    ].join(';');
+
     axios
       .get('http://regretsyreviews-env.5sjqpmny7c.us-east-2.elasticbeanstalk.com/reviews/sellers')
       // .get('/reviews/sellers')
       .then( res => {
-        
+
         const ids  = [];
         const data = res.data
 
         data.forEach( id => {
           ids.push(id.listingID)
         })
-        console.log('Generating a random ID')
+        console.log('%c[REVIEWS]', styles,' generating a random listing ID from: ', ids)
+
         let randomId = ids[Math.floor(Math.random() * (101 - 1)) + 1]
         this.retrieveSeller(randomId);
       })
@@ -123,15 +153,27 @@ class App extends React.Component {
   }
 
   render() {
+    
+    
+
     // Listen for a product listing ID from message bus:
     this.reviewChannel.onmessage = (e) => {
-      console.log(`Reviews recieved listing ID ${e.data} on channel 'regretfully'`);
+
+      const styles = [
+        'background: linear-gradient(#D33106, #571402)'
+        , 'border: 1px solid #3E0E02'
+        , 'color: white'
+        , 'display: block'
+        , 'text-shadow: 0 1px 0 rgba(0, 0, 0, 0.3)'
+        , 'box-shadow: 0 1px 0 rgba(255, 255, 255, 0.4) inset, 0 5px 3px -5px rgba(0, 0, 0, 0.5), 0 -13px 5px -10px rgba(255, 255, 255, 0.4) inset'
+        , 'line-height: 40px'
+        , 'text-align: center'
+        , 'font-weight: bold'
+      ].join(';');
+
+      console.log('%c[REVIEWS]', styles,` recieved listing ID: ${e.data}, on channel 'regretfully'`);
       this.retrieveSeller(e.data);
     }
-
-    // Log source of rendering from state:
-    console.log(`Rendering reviews for: \n
-                 ProductID: ${this.state.currentProductID}`)
 
     // Return our microservice:
     return (
@@ -153,7 +195,7 @@ class App extends React.Component {
         {/* Conditionally Rendering Review List */}
         <Row>
           <Col>
-            {
+            { // javascript
               this.state.loading === true ? 
 
               <Row>
@@ -182,20 +224,26 @@ class App extends React.Component {
         {/* Conditionally Rendering Expansion Buttons */}
         <Row>
           <Col>
-              {this.state.moreClicked === true ?
-              this.state.readAllClicked === true ? <span /> : 
-                <Button 
-                  className ='readAllReviews' 
-                  variant   ="dark" 
-                  size      ="lg"
-                  onClick   ={this.handleReadAllReviewsClick}>
-                    Read All Reviews ({this.state.currentReviews.length-11})
-                </Button> : 
+              { // javascript
+                this.state.moreClicked === true ?
+                  this.state.readAllClicked === true ? 
+
+                  <span /> : 
+
+                    <Button 
+                      className ='readAllReviews' 
+                      variant   ="dark" 
+                      size      ="lg"
+                      onClick   ={this.handleReadAllReviewsClick}>
+                        Read All Reviews ({this.state.currentReviews.length-11})
+                    </Button> : 
+
                 <span 
                   className ='plusMore' 
                   onClick   ={this.handleMoreClick}>
                     + More
-                </span>}
+                </span>
+              }
           </Col>
         </Row>
         <Row><p className="reviewListFooter"/></Row>
