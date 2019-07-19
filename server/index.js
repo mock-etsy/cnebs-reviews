@@ -21,11 +21,10 @@ app.use('/', express.static('./client/dist'));
 // // db.seedDBListingID(listData.sellerData);
 // // db.seedDBProductInfo(listData.itemIDandPhotoforCharles);
 
-// // Test data generator on /test
-// app.get('/reviews/test', (req, res) => {
-//   res.send(fakeData.dataGen());
-// })
-
+// Testing routes
+app.get('/reviews/tests/datagen', (req, res) => {res.send(fakeData.dataGen());}) // data generator
+app.get('/reviews/tests/knex/retrieveseller', (req, res) => {db.retrieveSeller(674905924);}); // retrieve via a listing id
+app.get('/reviews/tests/knex/retrievesellerids', (req, res) => {db.retrieveSellerIds();}); // retrieve all listing ids
 
 
 // Get seller information for a single seller ID
@@ -36,7 +35,6 @@ app.get('/reviews/sellers/product/:id', (req, res) => {
   });
 })
 
-app.get('/reviews/tests/knex', (req, res) => {db.retrieveSeller(674905924);});
 
 // Get seller IDs from database
 app.get('/reviews/sellers', (req, res) => {
@@ -47,4 +45,4 @@ app.get('/reviews/sellers', (req, res) => {
 })
 
 app.listen(port, host, () => 
-  { console.log(`Eavesdropping on ${host} at ${port}`)});
+  { console.log(`Regretsy Reviews Server eavesdropping on ${host} at ${port}`)});

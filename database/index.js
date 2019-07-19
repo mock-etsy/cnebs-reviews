@@ -160,6 +160,46 @@ const seedDBProductInfo = function(data) {
   });
 };
 
+// refactored with knex
+const retrieveSeller = id => {
+  const subquery = knex.select('sellerID').from('sellers').where({ listingID : id })
+  
+  knex(knex.raw('sellers, reviews'))
+  .where({
+    'reviews.sellers_ID' : subquery,
+    'sellerID'           : subquery
+  })
+  .select(
+    'sellers_ID',
+    'sellerName',
+    'sellerUsername',
+    'sellerAvatar',
+    'listingID',
+    'productTitle',
+    'productImage',
+    'averageRating',
+      'reviewerName',
+      'reviewerAvatar',
+      'reviewDate',
+      'reviewRating',
+      'reviewText'
+      )
+      .then( result => {
+        console.log('knex query result: ', result);
+      })
+      .catch( error => {
+        console.log('knex error: ', error)
+      });
+}
+
+// refactored with knex
+const retrieveSellerIds = () => {
+  knex('sellers')
+  .select('listingID')
+  .then( result => console.log('KNEX: retrieveSellerIds query: \n', result))
+  .catch( error => console.log('KNEX : retrieveSellerIds error:\n', error));
+}
+
 const retrieveSellerDEPRECATED = (id, cb) => {
   connection.query(`
     SELECT 
@@ -193,68 +233,12 @@ const retrieveSellerDEPRECATED = (id, cb) => {
     });
 }
 
-const retrieveSeller = id => {
-
-  const subquery = knex.select('sellerID').from('sellers').where({ listingID : id })
-
-  knex(knex.raw('sellers, reviews')).where({
-    'reviews.sellers_ID' : subquery,
-    'sellerID'           : subquery
-  }).select(
-    'sellers_ID',
-    'sellerName',
-    'sellerUsername',
-    'sellerAvatar',
-    'listingID',
-    'productTitle',
-    'productImage',
-    'averageRating',
-    'reviewerName',
-    'reviewerAvatar',
-    'reviewDate',
-    'reviewRating',
-    'reviewText'
-  )
-
-  // knex.select('sellerID', 'reviewerName').from(knex.raw('sellers, reviews'))
-
-  // knex.select(
-  //     'sellers_ID',
-  //     'sellerName',
-  //     'sellerUsername',
-  //     'sellerAvatar',
-  //     'listingID',
-  //     'productTitle',
-  //     'productImage',
-  //     'averageRating',
-  //     'reviewerName',
-  //     'reviewerAvatar',
-  //     'reviewDate',
-  //     'reviewRating',
-  //     'reviewText'
-  //   ).from(
-  //     knex.raw('sellers, reviews')
-  //   )
-  //   .where({
-  //     'reviews.sellers_ID': subquery,
-  //     'sellerID'          : subquery
-  //   })
-
-    .then( result => {
-      console.log('knex query result: ', result);
-    })
-    .catch( error => {
-      console.log('knex error: ', error)
-    })
-}
-
-const retrieveSellerIds = (cb) => {
-  
+const retrieveSellerIdsDEPRECATED = (cb) => {
   connection.query(`select listingID from sellers;`,(error, results) => {
     if (error) {
       cb('Error retrieving listing IDs', error);
     } else {
-      cb(null, results);
+    cb(null, results);
     }
   })
 }
