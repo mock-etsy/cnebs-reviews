@@ -1,8 +1,115 @@
 const mysql      = require('mysql');
 const config     = require('../config.js');
 
+const knex = require('knex') ({
+  client: 'mysql',
+  connection: {
+    host       : process.env.RDS_HOSTNAME || config.DBCONFIG.host,
+    user       : process.env.RDS_USERNAME || config.DBCONFIG.user,
+    password   : process.env.RDS_PASSWORD || config.DBCONFIG.password,
+    port       : process.env.RDS_PORT     || 3306,
+    database   : process.env.RDS_DB_NAME  || config.DBCONFIG.database 
+  }
+})
+
+// refactored with knex
+// retrieves data for rendering when given a listing ID
+const retrieveSeller = (id, cb) => {
+
+  const subquery = knex.select('sellerID').from('sellers').where({ listingID : id })
+  
+  knex(knex.raw('sellers, reviews'))
+  .where({
+    'reviews.sellers_ID' : subquery,
+    'sellerID'           : subquery
+  })
+  .select(
+    'sellers_ID',
+    'sellerName',
+    'sellerUsername',
+    'sellerAvatar',
+    'listingID',
+    'productTitle',
+    'productImage',
+    'averageRating',
+      'reviewerName',
+      'reviewerAvatar',
+      'reviewDate',
+      'reviewRating',
+      'reviewText'
+  )
+  .then( result => {
+    console.log('knex query result: ', result);
+    cb(null, result)
+  })
+  .catch( error => {
+    console.log('knex error: ', error);
+    cb(error)
+  });
+}
+
+// refactored with knex
+// retrieves an array of all listing IDs stored
+const retrieveSellerIds = (cb) => {
+  knex('sellers')
+  .select('listingID')
+  .then( result => {
+    console.log('KNEX: retrieveSellerIds query: \n', result);
+    cb(null, result)
+  })
+  .catch( error => {
+    console.log('KNEX : retrieveSellerIds error:\n', error);
+    cb(error);
+  });
+}
+
+const retrieveSellerDEPRECATED = (id, cb) => {
+  connection.query(`
+    SELECT 
+      sellers_ID,
+      sellerName,
+      sellerUsername,
+      sellerAvatar,
+      listingID,
+      productTitle,
+      productImage,
+      averageRating,
+      reviewerName,
+      reviewerAvatar,
+      reviewDate,
+      reviewRating,
+      reviewText
+    FROM
+      sellers,
+      reviews
+    WHERE
+      reviews.sellers_ID = (SELECT sellerID FROM sellers WHERE listingID = ${id})
+    AND 
+      sellerID = (SELECT sellerID FROM sellers WHERE listingID = ${id});
+    `, 
+    (error, results) => {
+      if (error) {
+        cb('Error retrieving reviews for 1 seller: ', error)
+      } else {
+        cb(null, results);
+      }
+    });
+}
+
+const retrieveSellerIdsDEPRECATED = (cb) => {
+  connection.query(`select listingID from sellers;`,(error, results) => {
+    if (error) {
+      cb('Error retrieving listing IDs', error);
+    } else {
+    cb(null, results);
+    }
+  })
+}
+
 /*
+
 // Uncomment to use MySQL instead of knex
+
 const connection = mysql.createConnection({
   host       : process.env.RDS_HOSTNAME || config.DBCONFIG.host,
   user       : process.env.RDS_USERNAME || config.DBCONFIG.user,
@@ -11,10 +118,12 @@ const connection = mysql.createConnection({
   database   : process.env.RDS_DB_NAME  || config.DBCONFIG.database
 });
 connection.connect();
+
 */
 
 
 /*
+
 // // *** FOR DOCKER RE-SEEDING ***
 // // If uncommented, will reset the contents of the database on save
 
@@ -49,10 +158,11 @@ connection.connect();
 ^ FOR DOCKER RE-SEEDING^
 */
 
+
 /*
+
 // *** SEEDING FUNCTIONS ***
-// **** NOT USING KNEX ****
-//
+
 const seedDB = ( data ) => {
   const fullData = data.data.data;
 
@@ -156,104 +266,11 @@ const seedDBProductInfo = function(data) {
     );
   });
 };
+
 // End of seeding functions
+
 */
 
-const knex = require('knex') ({
-  client: 'mysql',
-  connection: {
-    host       : process.env.RDS_HOSTNAME || config.DBCONFIG.host,
-    user       : process.env.RDS_USERNAME || config.DBCONFIG.user,
-    password   : process.env.RDS_PASSWORD || config.DBCONFIG.password,
-    port       : process.env.RDS_PORT     || 3306,
-    database   : process.env.RDS_DB_NAME  || config.DBCONFIG.database 
-  }
-})
-
-// refactored with knex
-// retrieves data for rendering when given a listing ID
-const retrieveSeller = id => {
-  const subquery = knex.select('sellerID').from('sellers').where({ listingID : id })
-  
-  knex(knex.raw('sellers, reviews'))
-  .where({
-    'reviews.sellers_ID' : subquery,
-    'sellerID'           : subquery
-  })
-  .select(
-    'sellers_ID',
-    'sellerName',
-    'sellerUsername',
-    'sellerAvatar',
-    'listingID',
-    'productTitle',
-    'productImage',
-    'averageRating',
-      'reviewerName',
-      'reviewerAvatar',
-      'reviewDate',
-      'reviewRating',
-      'reviewText'
-      )
-      .then( result => {
-        console.log('knex query result: ', result);
-      })
-      .catch( error => {
-        console.log('knex error: ', error)
-      });
-}
-
-// refactored with knex
-// retrieves an array of all listing IDs stored
-const retrieveSellerIds = () => {
-  knex('sellers')
-  .select('listingID')
-  .then( result => console.log('KNEX: retrieveSellerIds query: \n', result))
-  .catch( error => console.log('KNEX : retrieveSellerIds error:\n', error));
-}
-
-const retrieveSellerDEPRECATED = (id, cb) => {
-  connection.query(`
-    SELECT 
-      sellers_ID,
-      sellerName,
-      sellerUsername,
-      sellerAvatar,
-      listingID,
-      productTitle,
-      productImage,
-      averageRating,
-      reviewerName,
-      reviewerAvatar,
-      reviewDate,
-      reviewRating,
-      reviewText
-    FROM
-      sellers,
-      reviews
-    WHERE
-      reviews.sellers_ID = (SELECT sellerID FROM sellers WHERE listingID = ${id})
-    AND 
-      sellerID = (SELECT sellerID FROM sellers WHERE listingID = ${id});
-    `, 
-    (error, results) => {
-      if (error) {
-        cb('Error retrieving reviews for 1 seller: ', error)
-      } else {
-        cb(null, results);
-      }
-    });
-}
-
-const retrieveSellerIdsDEPRECATED = (cb) => {
-  connection.query(`select listingID from sellers;`,(error, results) => {
-    if (error) {
-      cb('Error retrieving listing IDs', error);
-    } else {
-    cb(null, results);
-    }
-  })
-}
 
 // Uncomment seeding functions to be used
 module.exports = 
